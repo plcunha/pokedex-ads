@@ -1,4 +1,5 @@
-Pokedex ADS 
+Pokedex ADS.
+Atividade iniciada em sala de aula.
 
-Atividade 
+NOME:João Vitor Cunha dos Santos.
 RA:21161106-2
