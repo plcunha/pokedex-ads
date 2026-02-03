@@ -38,6 +38,15 @@
 - [x] Documentação OpenAPI para novos endpoints
 - [x] Branch: feature/metrics-monitoring (pushed)
 
+### Sessão 6 - Advanced Rate Limiting
+- [x] Sliding window rate limiting algorithm
+- [x] Per-endpoint rate limit configuration (search, pokemon, system, static)
+- [x] Standard rate limit headers (X-RateLimit-Limit, Remaining, Reset)
+- [x] JSON and HTML error responses for 429 status
+- [x] 16 unit tests for rate limiter service
+- [x] Total: 70 unit tests passing
+- [x] Branch: feature/rate-limiting-advanced (pushed)
+
 ## 🔀 Branches Prontas para PR
 
 | Branch | Feature | PR Link |
@@ -46,22 +55,22 @@
 | feature/openapi-swagger | Swagger/OpenAPI docs | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/openapi-swagger) |
 | feature/e2e-playwright | 17 E2E tests | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/e2e-playwright) |
 | feature/metrics-monitoring | Metrics & Monitoring | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/metrics-monitoring) |
+| feature/rate-limiting-advanced | Advanced Rate Limiting | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/rate-limiting-advanced) |
 
 ## 📋 Pendente (Priorizado)
 
 ### Alta Prioridade
-- [ ] Merge das 4 branches pendentes de PR
+- [ ] Merge das 5 branches pendentes de PR
 
 ### Média Prioridade
-1. **Rate Limiting Avançado**
-   - Rate limiting por endpoint
-   - Sliding window algorithm
-   - Redis backend para ambientes distribuídos
-
-2. **Caching com Redis**
+1. **Caching com Redis**
    - Substituir cache in-memory por Redis
    - Cache invalidation strategies
    - Cache warming
+
+2. **Redis Backend for Rate Limiter**
+   - Distributed rate limiting support
+   - Persist rate limit state across restarts
 
 ### Baixa Prioridade
 3. **Internacionalização (i18n)**
@@ -77,7 +86,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Testes Unitários | 54 passando |
+| Testes Unitários | 70 passando |
 | Testes E2E | 17 passando |
 | Coverage (statements) | 84.18% |
 | Coverage (branches) | 73.41% |

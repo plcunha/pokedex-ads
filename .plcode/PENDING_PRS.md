@@ -56,6 +56,18 @@ gh auth login
 
 ---
 
+## PR 5: Advanced Rate Limiting (NEW)
+- **Branch:** `feature/rate-limiting-advanced`
+- **Create PR:** https://github.com/plcunha/pokedex-ads/pull/new/feature/rate-limiting-advanced
+- **Title:** `feat: add advanced sliding window rate limiter`
+- **Description:**
+  - Sliding window rate limiting algorithm
+  - Per-endpoint configuration (search, pokemon, system, static)
+  - Standard rate limit headers (X-RateLimit-*)
+  - 16 new unit tests (70 total)
+
+---
+
 ## After Creating PRs
 
 Once PRs are created and merged, delete this file:
