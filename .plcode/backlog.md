@@ -47,6 +47,29 @@
 - [x] Total: 70 unit tests passing
 - [x] Branch: feature/rate-limiting-advanced (pushed)
 
+### Sessão 7 - Redis Caching
+- [x] Redis cache-aside pattern implementation
+- [x] CacheService with Redis support
+- [x] Cache invalidation strategies
+- [x] Fallback to in-memory cache when Redis unavailable
+- [x] Branch: feature/redis-caching (pushed)
+
+### Sessão 8 - Redis Rate Limiter
+- [x] Distributed rate limiting with Redis
+- [x] Lua scripts for atomic operations
+- [x] Graceful fallback to in-memory when Redis unavailable
+- [x] Branch: feature/redis-rate-limiter (pushed)
+
+### Sessão 9 - Internationalization (i18n)
+- [x] I18nService with translations for PT-BR (default) and EN
+- [x] i18nMiddleware for language detection (query param, cookie, Accept-Language header)
+- [x] All 5 EJS views updated with translations and language switcher UI
+- [x] cookie-parser for locale persistence (1 year cookie)
+- [x] 31 unit tests for i18n service
+- [x] Total: 97 unit tests passing (+31)
+- [x] Branch: feature/i18n (pushed)
+- [x] Commit: 109d5b9
+
 ## 🔀 Branches Prontas para PR
 
 | Branch | Feature | PR Link |
@@ -56,39 +79,43 @@
 | feature/e2e-playwright | 17 E2E tests | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/e2e-playwright) |
 | feature/metrics-monitoring | Metrics & Monitoring | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/metrics-monitoring) |
 | feature/rate-limiting-advanced | Advanced Rate Limiting | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/rate-limiting-advanced) |
+| feature/redis-caching | Redis Cache | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/redis-caching) |
+| feature/redis-rate-limiter | Redis Rate Limiter | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/redis-rate-limiter) |
+| feature/i18n | Internationalization | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/i18n) |
 
 ## 📋 Pendente (Priorizado)
 
 ### Alta Prioridade
-- [ ] Merge das 5 branches pendentes de PR
+- [ ] Merge das 8 branches pendentes de PR
 
 ### Média Prioridade
-1. **Caching com Redis**
-   - Substituir cache in-memory por Redis
-   - Cache invalidation strategies
-   - Cache warming
-
-2. **Redis Backend for Rate Limiter**
-   - Distributed rate limiting support
-   - Persist rate limit state across restarts
-
-### Baixa Prioridade
-3. **Internacionalização (i18n)**
-   - Suporte a múltiplos idiomas
-   - Traduções para PT-BR e EN
-
-4. **PWA Features**
+1. **PWA Features**
    - Service Worker
    - Offline support
    - App manifest
+
+2. **GraphQL API (Optional)**
+   - Alternative to REST API
+   - Type-safe queries
+
+### Baixa Prioridade
+3. **Authentication**
+   - User accounts
+   - Favorites/collections
+   - JWT or OAuth
+
+4. **Dark Mode**
+   - Theme toggle
+   - Persist preference
 
 ## 📊 Métricas Atuais
 
 | Métrica | Valor |
 |---------|-------|
-| Testes Unitários | 70 passando |
+| Testes Unitários | 97 passando |
 | Testes E2E | 17 passando |
 | Coverage (statements) | 84.18% |
 | Coverage (branches) | 73.41% |
 | Vulnerabilidades | 0 |
 | Build Status | ✅ Passing |
+| Idiomas Suportados | PT-BR, EN |
