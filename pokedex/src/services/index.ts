@@ -4,4 +4,9 @@
  */
 
 export { pokemonService } from './pokemon.service';
-export { pokemonCache, CacheService } from './cache.service';
+
+// Cache services - Redis with memory fallback
+export { pokemonCache, RedisCacheService, CacheService } from './redis-cache.service';
+
+// Legacy cache (kept for backward compatibility)
+export { CacheService as LegacyCacheService } from './cache.service';

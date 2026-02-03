@@ -24,6 +24,14 @@ export const config = {
     maxSize: 500,
   },
 
+  redis: {
+    enabled: process.env.REDIS_ENABLED === 'true',
+    host: process.env.REDIS_HOST || 'localhost',
+    port: parseInt(process.env.REDIS_PORT || '6379', 10),
+    password: process.env.REDIS_PASSWORD || '',
+    db: parseInt(process.env.REDIS_DB || '0', 10),
+  },
+
   rateLimit: {
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
