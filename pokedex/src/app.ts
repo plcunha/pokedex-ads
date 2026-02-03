@@ -1,65 +1,130 @@
-import express from 'express';
-import axios from 'axios';
+/**
+ * Pokédex Pro - Application Entry Point
+ * 
+ * A modern, professional Pokédex built with Express.js and TypeScript
+ * 
+ * @author Pokédex Team
+ * @version 2.0.0
+ */
+
+import express, { Express } from 'express';
 import path from 'path';
+import helmet from 'helmet';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 
-const app = express();
-const port = 3000;
+import { config } from './config';
+import routes from './routes';
+import { errorHandler, notFoundHandler, requestLogger } from './middlewares';
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+/**
+ * Create and configure Express application
+ */
+function createApp(): Express {
+  const app = express();
 
-app.get('/', async (req, res) => {
-  try {
-    const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=20');
-    const pokemons = response.data.results;
-    res.render('index', { pokemons });
-  } catch (error) {
-    console.error('Error fetching Pokémon data:', error);
-    res.status(500).send('Erro no servidor');
-  }
+  // ===========================================
+  // Security Middlewares
+  // ===========================================
+  
+  // Helmet - Security headers
+  app.use(helmet(config.security.helmet));
+
+  // Rate limiting
+  app.use(rateLimit({
+    windowMs: config.rateLimit.windowMs,
+    max: config.rateLimit.max,
+    message: 'Muitas requisições, tente novamente mais tarde',
+    standardHeaders: true,
+    legacyHeaders: false,
+  }));
+
+  // ===========================================
+  // Performance Middlewares
+  // ===========================================
+  
+  // Compression
+  app.use(compression());
+
+  // ===========================================
+  // View Engine Setup
+  // ===========================================
+  
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'ejs');
+
+  // ===========================================
+  // Static Files
+  // ===========================================
+  
+  app.use(express.static(path.join(__dirname, '..', 'public'), {
+    maxAge: config.app.isProduction ? '1d' : 0,
+  }));
+
+  // ===========================================
+  // Request Parsing
+  // ===========================================
+  
+  app.use(express.json({ limit: '10kb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+  // ===========================================
+  // Logging
+  // ===========================================
+  
+  app.use(requestLogger);
+
+  // ===========================================
+  // Routes
+  // ===========================================
+  
+  app.use('/', routes);
+
+  // ===========================================
+  // Error Handling
+  // ===========================================
+  
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+
+  return app;
+}
+
+/**
+ * Start the server
+ */
+function startServer(): void {
+  const app = createApp();
+
+  app.listen(config.app.port, () => {
+    console.log('');
+    console.log('╔══════════════════════════════════════════════════╗');
+    console.log('║                                                  ║');
+    console.log(`║   🎮 ${config.app.name} v${config.app.version}                      ║`);
+    console.log('║                                                  ║');
+    console.log(`║   🚀 Server:  http://localhost:${config.app.port}             ║`);
+    console.log(`║   📦 Mode:    ${config.app.env.padEnd(29)}║`);
+    console.log('║                                                  ║');
+    console.log('╚══════════════════════════════════════════════════╝');
+    console.log('');
+  });
+}
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error: Error) => {
+  console.error('UNCAUGHT EXCEPTION! Shutting down...');
+  console.error(error.name, error.message);
+  process.exit(1);
 });
 
-app.get('/search', async (req, res) => {
-  const query = req.query.query as string;
-  try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`);
-    const pokemon = response.data;
-    res.render('pokemon', {
-      pokemon: {
-        id: pokemon.id,
-        name: pokemon.name,
-        stats: pokemon.stats,
-      },
-    });
-  } catch (error) {
-    console.error('Error fetching Pokémon data:', error);
-    res.status(404).send('Pokémon não encontrado');
-  }
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason: unknown) => {
+  console.error('UNHANDLED REJECTION! Shutting down...');
+  console.error(reason);
+  process.exit(1);
 });
 
-app.get('/pokemon/:name', async (req, res) => {
-  const name = req.params.name;
-  try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
-    const pokemon = response.data;
-    res.render('pokemon', {
-      pokemon: {
-        id: pokemon.id,
-        name: pokemon.name,
-        stats: pokemon.stats,
-      },
-    });
-  } catch (error) {
-    console.error('Error fetching Pokémon data:', error);
-    res.status(404).send('Pokémon não encontrado');
-  }
-});
+// Start the application
+startServer();
 
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(500).send('Erro no servidor');
-});
-
-app.listen(port, () => {
-  console.log(`Server rodando na porta http://localhost:${port}`);
-});
+export { createApp };

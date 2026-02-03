@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Resultados da busca por <%= query %> - Pokédex Pro">
+  <meta name="theme-color" content="#EF4444">
+  <title>Busca: <%= query %> - Pokédex Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #EF4444;
+      --color-primary-dark: #DC2626;
+      --color-secondary: #3B82F6;
+      --color-bg: #0F172A;
+      --color-bg-secondary: #1E293B;
+      --color-card: #1E293B;
+      --color-card-hover: #334155;
+      --color-text: #F8FAFC;
+      --color-text-muted: #94A3B8;
+      --color-border: #334155;
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --transition: all 0.2s ease-in-out;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+      padding: 1.5rem 1rem 2.5rem;
+      position: relative;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+
+    .back-link:hover {
+      opacity: 0.8;
+    }
+
+    .search-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .search-query {
+      color: rgba(255,255,255,0.9);
+      font-weight: 400;
+    }
+
+    .results-count {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.8);
+      margin-top: 0.5rem;
+    }
+
+    /* Main */
+    .main {
+      max-width: 1200px;
+      margin: -1.5rem auto 0;
+      padding: 0 1rem 3rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Pokemon Grid */
+    .pokemon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+      list-style: none;
+    }
+
+    .pokemon-card {
+      background: var(--color-card);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      transition: var(--transition);
+      border: 1px solid var(--color-border);
+    }
+
+    .pokemon-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--color-primary);
+    }
+
+    .pokemon-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      padding: 1.25rem;
+    }
+
+    .pokemon-image-wrapper {
+      position: relative;
+      padding-top: 100%;
+      background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-card) 100%);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .pokemon-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+
+    .pokemon-card:hover .pokemon-image {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .pokemon-id {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .pokemon-name {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--color-text);
+      text-transform: capitalize;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .footer a {
+      color: var(--color-primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer a:hover {
+      color: var(--color-text);
+    }
+
+    @media (max-width: 640px) {
+      .pokemon-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="/" class="back-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+        Voltar para Pokédex
+      </a>
+      <h1 class="search-title">Resultados para: <span class="search-query">"<%= query %>"</span></h1>
+      <p class="results-count"><%= results.length %> Pokémon encontrado<%= results.length !== 1 ? 's' : '' %></p>
+    </div>
+  </header>
+
+  <main class="main">
+    <ul class="pokemon-grid">
+      <% results.forEach(pokemon => { %>
+        <li class="pokemon-card">
+          <a href="/pokemon/<%= pokemon.name %>" class="pokemon-link">
+            <div class="pokemon-image-wrapper">
+              <img 
+                src="<%= pokemon.imageUrl %>" 
+                alt="<%= pokemon.displayName %>"
+                class="pokemon-image"
+                loading="lazy"
+              >
+            </div>
+            <p class="pokemon-id">#<%= String(pokemon.id).padStart(3, '0') %></p>
+            <h2 class="pokemon-name"><%= pokemon.displayName %></h2>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <p>
+      Pokédex Pro &copy; <%= new Date().getFullYear() %> &bull;
+      Dados fornecidos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
+    </p>
+  </footer>
+</body>
+</html>
