@@ -1,0 +1,55 @@
+# Pokedex Pro - Backlog de Melhorias
+
+## Última atualização: 2026-02-03
+
+## ✅ Concluído
+
+### Sessão 1 - Setup Inicial
+- [x] Modernização para TypeScript v2.0.0
+- [x] CI/CD com GitHub Actions
+- [x] Docker (produção e desenvolvimento)
+- [x] ESLint v9 configurado
+- [x] 37 testes iniciais
+
+### Sessão 2 - Cobertura de Testes
+- [x] 66 testes passando (+29)
+- [x] Cobertura de branches: 73.41% (acima de 70%)
+- [x] Controller coverage: 100%
+- [x] Commit: 5f0399b
+
+## 📋 Pendente (Priorizado)
+
+### Alta Prioridade
+- Nenhum item pendente de alta prioridade
+
+### Média Prioridade
+1. **Atualização de Dependências Major**
+   - Express 4.22.1 → 5.2.1 (breaking changes)
+   - EJS 3.1.10 → 4.0.1 (breaking changes)
+   - express-rate-limit 7.5.1 → 8.2.1
+   - @types/node 22.19.8 → 25.2.0
+   - ⚠️ Requer análise de breaking changes antes de atualizar
+
+### Baixa Prioridade
+2. **Testes E2E com Playwright**
+   - Testar fluxos completos de usuário
+   - Screenshots de regressão visual
+
+3. **Documentação OpenAPI/Swagger**
+   - Documentar endpoints da API
+   - Interface interativa para testes
+
+4. **Métricas e Monitoramento**
+   - Health checks avançados
+   - Métricas de performance
+   - Logging estruturado (JSON)
+
+## 📊 Métricas Atuais
+
+| Métrica | Valor |
+|---------|-------|
+| Testes | 66 passando |
+| Coverage (statements) | 84.18% |
+| Coverage (branches) | 73.41% |
+| Vulnerabilidades | 0 |
+| Build Status | ✅ Passing |
