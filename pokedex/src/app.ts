@@ -11,17 +11,49 @@ import express, { Express } from 'express';
 import path from 'path';
 import helmet from 'helmet';
 import compression from 'compression';
-import rateLimit from 'express-rate-limit';
 
 import { config } from './config';
 import routes from './routes';
 import { errorHandler, notFoundHandler, requestLogger } from './middlewares';
+import { rateLimiter } from './services';
+
+/**
+ * Configure advanced rate limiter with per-endpoint rules
+ */
+function configureRateLimiter(): void {
+  // Apply endpoint-specific configurations
+  const endpoints = config.rateLimit.endpoints;
+  
+  rateLimiter.addEndpointConfig(endpoints.search.pattern, {
+    windowMs: endpoints.search.windowMs,
+    maxRequests: endpoints.search.maxRequests,
+    blockDurationMs: endpoints.search.blockDurationMs,
+  });
+  
+  rateLimiter.addEndpointConfig(endpoints.pokemon.pattern, {
+    windowMs: endpoints.pokemon.windowMs,
+    maxRequests: endpoints.pokemon.maxRequests,
+  });
+  
+  rateLimiter.addEndpointConfig(endpoints.system.pattern, {
+    windowMs: endpoints.system.windowMs,
+    maxRequests: endpoints.system.maxRequests,
+  });
+  
+  rateLimiter.addEndpointConfig(endpoints.static.pattern, {
+    windowMs: endpoints.static.windowMs,
+    maxRequests: endpoints.static.maxRequests,
+  });
+}
 
 /**
  * Create and configure Express application
  */
 function createApp(): Express {
   const app = express();
+
+  // Configure rate limiter with endpoint-specific rules
+  configureRateLimiter();
 
   // ===========================================
   // Security Middlewares
@@ -30,14 +62,8 @@ function createApp(): Express {
   // Helmet - Security headers
   app.use(helmet(config.security.helmet));
 
-  // Rate limiting
-  app.use(rateLimit({
-    windowMs: config.rateLimit.windowMs,
-    max: config.rateLimit.max,
-    message: 'Muitas requisições, tente novamente mais tarde',
-    standardHeaders: true,
-    legacyHeaders: false,
-  }));
+  // Advanced sliding window rate limiting
+  app.use(rateLimiter.middleware());
 
   // ===========================================
   // Performance Middlewares
