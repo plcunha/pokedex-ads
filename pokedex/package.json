@@ -1,7 +1,6 @@
 {
   "name": "pokedex-pro",
   "version": "2.0.0",
-  "type": "module",
   "description": "A modern, professional Pokédex built with Express.js and TypeScript",
   "author": "Pokédex Team",
   "license": "MIT",
