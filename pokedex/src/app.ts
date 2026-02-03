@@ -12,8 +12,9 @@ import path from 'path';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
+import swaggerUi from 'swagger-ui-express';
 
-import { config } from './config';
+import { config, swaggerSpec } from './config';
 import routes from './routes';
 import { errorHandler, notFoundHandler, requestLogger } from './middlewares';
 
@@ -73,6 +74,21 @@ function createApp(): Express {
   // ===========================================
   
   app.use(requestLogger);
+
+  // ===========================================
+  // API Documentation (Swagger)
+  // ===========================================
+  
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'Pokédex Pro API Documentation',
+  }));
+
+  // JSON endpoint for OpenAPI spec
+  app.get('/api-docs.json', (_req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
 
   // ===========================================
   // Routes

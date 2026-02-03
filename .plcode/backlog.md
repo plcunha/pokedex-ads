@@ -17,6 +17,15 @@
 - [x] Controller coverage: 100%
 - [x] Commit: 5f0399b
 
+### Sessão 3 - OpenAPI/Swagger Documentation
+- [x] swagger-jsdoc e swagger-ui-express instalados
+- [x] Configuração OpenAPI 3.0 criada
+- [x] JSDoc annotations em todas as rotas
+- [x] Swagger UI disponível em /api-docs
+- [x] Endpoint JSON em /api-docs.json
+- [x] Todos 66 testes passando
+- [x] Branch: feature/openapi-swagger
+
 ## 📋 Pendente (Priorizado)
 
 ### Alta Prioridade
@@ -36,11 +45,7 @@
    - Testar fluxos completos de usuário
    - Screenshots de regressão visual
 
-3. **Documentação OpenAPI/Swagger**
-   - Documentar endpoints da API
-   - Interface interativa para testes
-
-4. **Métricas e Monitoramento**
+3. **Métricas e Monitoramento**
    - Health checks avançados
    - Métricas de performance
    - Logging estruturado (JSON)
