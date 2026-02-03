@@ -7,7 +7,7 @@ Uma Pokédex moderna e profissional construída com **Express.js** e **TypeScrip
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![CI](https://github.com/YOUR_USERNAME/pokedex-ads/actions/workflows/ci.yml/badge.svg)
-![Tests](https://img.shields.io/badge/tests-37%20passing-brightgreen.svg)
+![Tests](https://img.shields.io/badge/tests-66%20passing-brightgreen.svg)
 
 ## ✨ Features
 
