@@ -23,12 +23,13 @@
 - Nenhum item pendente de alta prioridade
 
 ### Média Prioridade
-1. **Atualização de Dependências Major**
-   - Express 4.22.1 → 5.2.1 (breaking changes)
-   - EJS 3.1.10 → 4.0.1 (breaking changes)
-   - express-rate-limit 7.5.1 → 8.2.1
-   - @types/node 22.19.8 → 25.2.0
-   - ⚠️ Requer análise de breaking changes antes de atualizar
+1. ✅ **Atualização de Dependências Major** - DONE (branch: feature/dependency-updates)
+   - Express 4.22.1 → 5.2.1 ✅
+   - EJS 3.1.10 → 4.0.1 ✅
+   - express-rate-limit 7.5.1 → 8.2.1 ✅
+   - @types/node 22.19.8 → 25.2.0 ✅
+   - Todos 66 testes passam com novas versões
+   - Criar PR: https://github.com/plcunha/pokedex-ads/pull/new/feature/dependency-updates
 
 ### Baixa Prioridade
 2. **Testes E2E com Playwright**
