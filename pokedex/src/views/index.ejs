@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<%= htmlLang %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Pokédex Pro - Explore todos os Pokémon com informações detalhadas">
+  <meta name="description" content="<%= t.meta.description %>">
   <meta name="theme-color" content="#EF4444">
-  <title>Pokédex Pro</title>
+  <title><%= t.appName %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -79,11 +79,17 @@
       text-align: center;
     }
 
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
     .logo {
       display: inline-flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 1.5rem;
     }
 
     .logo-icon {
@@ -102,6 +108,37 @@
       font-weight: 800;
       color: white;
       text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .lang-btn {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .lang-btn.active {
+      background: white;
+      color: var(--color-primary);
+      border-color: white;
     }
 
     /* Search Form */
@@ -321,6 +358,11 @@
         padding: 1.5rem 1rem 2.5rem;
       }
 
+      .header-top {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
       .logo-text {
         font-size: 1.5rem;
       }
@@ -351,16 +393,22 @@
 <body>
   <header class="header">
     <div class="header-content">
-      <div class="logo">
-        <div class="logo-icon">🔴</div>
-        <h1 class="logo-text">Pokédex Pro</h1>
+      <div class="header-top">
+        <div class="logo">
+          <div class="logo-icon">🔴</div>
+          <h1 class="logo-text"><%= t.appName %></h1>
+        </div>
+        <div class="lang-switcher">
+          <a href="?lang=pt-BR" class="lang-btn <%= locale === 'pt-BR' ? 'active' : '' %>">PT</a>
+          <a href="?lang=en" class="lang-btn <%= locale === 'en' ? 'active' : '' %>">EN</a>
+        </div>
       </div>
       <form action="/search" method="get" class="search-form">
         <input 
           type="text" 
           name="query" 
           class="search-input"
-          placeholder="Buscar Pokémon por nome ou número..."
+          placeholder="<%= t.home.searchPlaceholder %>"
           autocomplete="off"
           required
         >
@@ -369,7 +417,7 @@
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
           </svg>
-          Buscar
+          <%= t.home.searchButton %>
         </button>
       </form>
     </div>
@@ -401,29 +449,29 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m15 18-6-6 6-6"></path>
           </svg>
-          Anterior
+          <%= t.home.previous %>
         </a>
       <% } else { %>
         <button class="pagination-btn" disabled>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m15 18-6-6 6-6"></path>
           </svg>
-          Anterior
+          <%= t.home.previous %>
         </button>
       <% } %>
 
-      <span class="pagination-info">Página <%= pagination.current %> de <%= pagination.total %></span>
+      <span class="pagination-info"><%= t.home.page %> <%= pagination.current %> <%= t.home.of %> <%= pagination.total %></span>
 
       <% if (pagination.hasNext) { %>
         <a href="/?page=<%= pagination.current + 1 %>" class="pagination-btn">
-          Próximo
+          <%= t.home.next %>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m9 18 6-6-6-6"></path>
           </svg>
         </a>
       <% } else { %>
         <button class="pagination-btn" disabled>
-          Próximo
+          <%= t.home.next %>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m9 18 6-6-6-6"></path>
           </svg>
@@ -434,8 +482,8 @@
 
   <footer class="footer">
     <p>
-      Pokédex Pro &copy; <%= new Date().getFullYear() %> &bull;
-      Dados fornecidos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
+      <%= t.footer.copyright %> &copy; <%= new Date().getFullYear() %> &bull;
+      <%= t.footer.dataProvidedBy %> <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
     </p>
   </footer>
 </body>

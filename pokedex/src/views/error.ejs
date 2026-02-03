@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<%= htmlLang %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#EF4444">
-  <title>Erro <%= statusCode %> - Pokédex Pro</title>
+  <title><%= statusCode === 404 ? t.errors.notFound : t.errors.somethingWentWrong %> - <%= t.appName %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
       --color-text: #F8FAFC;
       --color-text-muted: #94A3B8;
       --color-border: #334155;
+      --radius-md: 0.5rem;
       --radius-xl: 1rem;
       --transition: all 0.2s ease-in-out;
     }
@@ -37,6 +38,40 @@
       justify-content: center;
       padding: 2rem;
       text-align: center;
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .lang-btn {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--color-text-muted);
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .lang-btn:hover {
+      background: var(--color-border);
+      color: var(--color-text);
+    }
+
+    .lang-btn.active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
     }
 
     .error-container {
@@ -110,6 +145,11 @@
   </style>
 </head>
 <body>
+  <div class="lang-switcher">
+    <a href="?lang=pt-BR" class="lang-btn <%= locale === 'pt-BR' ? 'active' : '' %>">PT</a>
+    <a href="?lang=en" class="lang-btn <%= locale === 'en' ? 'active' : '' %>">EN</a>
+  </div>
+
   <div class="error-container">
     <div class="error-code"><%= statusCode %></div>
     <div class="error-icon">
@@ -117,9 +157,9 @@
     </div>
     <h1 class="error-title">
       <% if (statusCode === 404) { %>
-        Página não encontrada
+        <%= t.errors.notFound %>
       <% } else { %>
-        Algo deu errado
+        <%= t.errors.somethingWentWrong %>
       <% } %>
     </h1>
     <p class="error-message"><%= message %></p>
@@ -128,7 +168,7 @@
         <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
         <polyline points="9 22 9 12 15 12 15 22"></polyline>
       </svg>
-      Voltar para Home
+      <%= t.errors.backToHome %>
     </a>
 
     <% if (showStack && stack) { %>

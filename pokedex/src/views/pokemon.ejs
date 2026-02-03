@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<%= htmlLang %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<%= pokemon.displayName %> - Informações detalhadas, stats e habilidades">
+  <meta name="description" content="<%= pokemon.displayName %> <%= t.meta.pokemonDescription %>">
   <meta name="theme-color" content="#EF4444">
-  <title><%= pokemon.displayName %> #<%= String(pokemon.id).padStart(3, '0') %> - Pokédex Pro</title>
+  <title><%= pokemon.displayName %> #<%= String(pokemon.id).padStart(3, '0') %> - <%= t.appName %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -97,6 +97,41 @@
       background: var(--color-card-hover);
       border-color: var(--color-primary);
       transform: translateX(-4px);
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 100;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .lang-btn {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--color-text-muted);
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .lang-btn:hover {
+      background: var(--color-card-hover);
+      color: var(--color-text);
+    }
+
+    .lang-btn.active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
     }
 
     /* Hero Section */
@@ -369,6 +404,13 @@
         padding: 1rem;
       }
 
+      .lang-switcher {
+        position: static;
+        justify-content: center;
+        padding: 0 1rem;
+        margin-top: -0.5rem;
+      }
+
       .hero {
         padding: 2rem 1rem;
       }
@@ -410,9 +452,14 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="m15 18-6-6 6-6"></path>
       </svg>
-      Voltar
+      <%= t.nav.back %>
     </a>
   </nav>
+
+  <div class="lang-switcher">
+    <a href="?lang=pt-BR" class="lang-btn <%= locale === 'pt-BR' ? 'active' : '' %>">PT</a>
+    <a href="?lang=en" class="lang-btn <%= locale === 'en' ? 'active' : '' %>">EN</a>
+  </div>
 
   <section class="hero">
     <div class="hero-content">
@@ -428,7 +475,7 @@
       <h1 class="pokemon-name"><%= pokemon.displayName %></h1>
       <div class="pokemon-types">
         <% pokemon.types.forEach(type => { %>
-          <span class="type-badge type-<%= type %>"><%= type %></span>
+          <span class="type-badge type-<%= type %>"><%= t.pokemon.types[type] || type %></span>
         <% }); %>
       </div>
     </div>
@@ -438,17 +485,17 @@
     <div class="info-grid">
       <div class="info-card">
         <div class="info-card-icon">📏</div>
-        <p class="info-card-label">Altura</p>
+        <p class="info-card-label"><%= t.pokemon.height %></p>
         <p class="info-card-value"><%= pokemon.height %></p>
       </div>
       <div class="info-card">
         <div class="info-card-icon">⚖️</div>
-        <p class="info-card-label">Peso</p>
+        <p class="info-card-label"><%= t.pokemon.weight %></p>
         <p class="info-card-value"><%= pokemon.weight %></p>
       </div>
       <div class="info-card">
         <div class="info-card-icon">⭐</div>
-        <p class="info-card-label">Experiência Base</p>
+        <p class="info-card-label"><%= t.pokemon.baseExperience %></p>
         <p class="info-card-value"><%= pokemon.baseExperience %></p>
       </div>
     </div>
@@ -459,7 +506,7 @@
           <path d="M3 3v18h18"></path>
           <path d="m19 9-5 5-4-4-3 3"></path>
         </svg>
-        Estatísticas Base
+        <%= t.pokemon.baseStats %>
       </h2>
       <div class="stats-list">
         <% pokemon.stats.forEach(stat => { %>
@@ -484,7 +531,7 @@
           <path d="m2 17 10 5 10-5"></path>
           <path d="m2 12 10 5 10-5"></path>
         </svg>
-        Habilidades
+        <%= t.pokemon.abilities %>
       </h2>
       <div class="abilities-list">
         <% pokemon.abilities.forEach(ability => { %>
@@ -496,8 +543,8 @@
 
   <footer class="footer">
     <p>
-      Pokédex Pro &copy; <%= new Date().getFullYear() %> &bull;
-      Dados fornecidos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
+      <%= t.footer.copyright %> &copy; <%= new Date().getFullYear() %> &bull;
+      <%= t.footer.dataProvidedBy %> <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
     </p>
   </footer>
 </body>
