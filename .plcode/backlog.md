@@ -47,6 +47,17 @@
 - [x] Total: 70 unit tests passing
 - [x] Branch: feature/rate-limiting-advanced (pushed)
 
+### Sessão 7 - Redis Caching
+- [x] RedisCacheService com fallback automático para memória
+- [x] Integração com ioredis para caching distribuído
+- [x] PokemonService atualizado para operações async de cache
+- [x] Configuração Redis em config/index.ts
+- [x] Redis service no docker-compose.yml com health checks
+- [x] Variáveis de ambiente Redis no .env.example
+- [x] 20 testes unitários para RedisCacheService
+- [x] Total: 74 testes passando
+- [x] Branch: feature/redis-caching (pushed)
+
 ## 🔀 Branches Prontas para PR
 
 | Branch | Feature | PR Link |
@@ -56,21 +67,21 @@
 | feature/e2e-playwright | 17 E2E tests | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/e2e-playwright) |
 | feature/metrics-monitoring | Metrics & Monitoring | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/metrics-monitoring) |
 | feature/rate-limiting-advanced | Advanced Rate Limiting | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/rate-limiting-advanced) |
+| feature/redis-caching | Redis Caching | [Create PR](https://github.com/plcunha/pokedex-ads/pull/new/feature/redis-caching) |
 
 ## 📋 Pendente (Priorizado)
 
 ### Alta Prioridade
-- [ ] Merge das 5 branches pendentes de PR
+- [ ] Merge das 6 branches pendentes de PR
 
 ### Média Prioridade
-1. **Caching com Redis**
-   - Substituir cache in-memory por Redis
-   - Cache invalidation strategies
-   - Cache warming
-
-2. **Redis Backend for Rate Limiter**
+1. **Redis Backend for Rate Limiter**
    - Distributed rate limiting support
    - Persist rate limit state across restarts
+
+2. **Cache Warming & Invalidation**
+   - Pre-populate cache on startup
+   - Event-based invalidation strategies
 
 ### Baixa Prioridade
 3. **Internacionalização (i18n)**
@@ -86,7 +97,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Testes Unitários | 70 passando |
+| Testes Unitários | 74 passando |
 | Testes E2E | 17 passando |
 | Coverage (statements) | 84.18% |
 | Coverage (branches) | 73.41% |
