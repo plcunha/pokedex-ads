@@ -1,0 +1,52 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Build output
+dist
+
+# Testing
+coverage
+.nyc_output
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+README.md
+LICENSE
+CHANGELOG.md
+docs/
+
+# Tests (not needed in production image)
+tests/
+**/*.test.ts
+**/*.spec.ts
+vitest.config.ts
+
+# Config files not needed at runtime
+tsconfig.json
+eslint.config.js
+.prettierrc
+.editorconfig

@@ -6,6 +6,8 @@ Uma Pokédex moderna e profissional construída com **Express.js** e **TypeScrip
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
+![CI](https://github.com/YOUR_USERNAME/pokedex-ads/actions/workflows/ci.yml/badge.svg)
+![Tests](https://img.shields.io/badge/tests-37%20passing-brightgreen.svg)
 
 ## ✨ Features
 
@@ -62,6 +64,53 @@ O servidor estará rodando em `http://localhost:3000`
 | `npm start` | Inicia a aplicação compilada |
 | `npm run lint` | Verifica problemas de código |
 | `npm run typecheck` | Verifica tipos TypeScript |
+| `npm test` | Executa os testes |
+| `npm run test:watch` | Executa testes em modo watch |
+| `npm run test:coverage` | Executa testes com cobertura |
+
+## 🧪 Testes
+
+O projeto utiliza **Vitest** como framework de testes:
+
+```bash
+# Executar todos os testes
+npm test
+
+# Executar testes em modo watch
+npm run test:watch
+
+# Executar com cobertura
+npm run test:coverage
+```
+
+### Estrutura de Testes
+
+```
+tests/
+├── integration/          # Testes de integração (rotas HTTP)
+├── mocks/                # Dados mock para testes
+└── unit/                 # Testes unitários (services)
+```
+
+## 🐳 Docker
+
+### Produção
+
+```bash
+# Build e execução
+docker-compose up -d
+
+# Ou apenas build
+docker build -t pokedex-pro .
+docker run -p 3000:3000 pokedex-pro
+```
+
+### Desenvolvimento
+
+```bash
+# Com hot-reload
+docker-compose --profile dev up pokedex-dev
+```
 
 ## 🛠️ Tecnologias
 
