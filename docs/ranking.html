@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Pokédex">
   
-  <title>Ranking de Pokémon - Pokédex Pro</title>
+  <title>Pokémon Tier List Maker - Pokédex Pro</title>
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
@@ -26,89 +26,211 @@
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-  <header class="header">
-    <div class="header-content">
-      <a href="index.html" class="logo">
-        <div class="logo-icon">🔴</div>
-        <h1 class="logo-text">Pokédex Pro</h1>
+<body class="ranking-page">
+  <!-- Compact Header -->
+  <header class="ranking-header-bar">
+    <a href="index.html" class="ranking-logo">
+      <span class="logo-icon-sm">🔴</span>
+      <span class="logo-text-sm">Pokédex Pro</span>
+    </a>
+    <nav class="ranking-nav">
+      <a href="index.html" class="nav-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+        Pokédex
       </a>
-      <nav class="header-nav">
-        <a href="index.html" class="nav-link">Pokédex</a>
-        <a href="ranking.html" class="nav-link active">Ranking</a>
-      </nav>
-    </div>
+      <a href="ranking.html" class="nav-pill active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 21v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"></path>
+          <path d="M3 21h18"></path>
+          <path d="M12 3l9 7H3l9-7z"></path>
+        </svg>
+        Tier List
+      </a>
+    </nav>
   </header>
 
-  <main class="main ranking-main">
-    <div class="ranking-header">
-      <h2 class="ranking-title">
-        <span class="ranking-icon">🏆</span>
-        Tier List de Pokémon
-      </h2>
-      <p class="ranking-subtitle">Arraste os Pokémon para classificá-los em diferentes tiers</p>
-      <div class="ranking-actions">
-        <button id="reset-btn" class="action-btn reset-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-            <path d="M3 3v5h5"></path>
+  <main class="ranking-container">
+    <!-- Title & Actions Bar -->
+    <div class="ranking-toolbar">
+      <div class="toolbar-left">
+        <h1 class="toolbar-title">
+          <span class="trophy-icon">🏆</span>
+          Pokémon Tier List
+        </h1>
+        <div class="toolbar-stats">
+          <span id="stats-ranked" class="stat-badge">0 classificados</span>
+          <span id="stats-remaining" class="stat-badge muted">151 restantes</span>
+        </div>
+      </div>
+      <div class="toolbar-actions">
+        <button id="clear-all-btn" class="tool-btn" title="Limpar Tudo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
           </svg>
-          Resetar
         </button>
-        <button id="save-btn" class="action-btn save-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button id="screenshot-btn" class="tool-btn" title="Capturar Screenshot">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+        </button>
+        <button id="share-btn" class="tool-btn" title="Compartilhar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+        <div class="toolbar-divider"></div>
+        <button id="save-btn" class="tool-btn primary" title="Salvar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
             <polyline points="17 21 17 13 7 13 7 21"></polyline>
             <polyline points="7 3 7 8 15 8"></polyline>
           </svg>
-          Salvar
+          <span>Salvar</span>
         </button>
       </div>
     </div>
 
-    <!-- Tier List -->
-    <div class="tier-list">
-      <div class="tier-row" data-tier="s-plus">
-        <div class="tier-label tier-s-plus">S+</div>
-        <div class="tier-content" data-tier="s-plus"></div>
-      </div>
-      <div class="tier-row" data-tier="s">
-        <div class="tier-label tier-s">S</div>
-        <div class="tier-content" data-tier="s"></div>
-      </div>
-      <div class="tier-row" data-tier="a">
-        <div class="tier-label tier-a">A</div>
-        <div class="tier-content" data-tier="a"></div>
-      </div>
-      <div class="tier-row" data-tier="b">
-        <div class="tier-label tier-b">B</div>
-        <div class="tier-content" data-tier="b"></div>
-      </div>
-      <div class="tier-row" data-tier="c">
-        <div class="tier-label tier-c">C</div>
-        <div class="tier-content" data-tier="c"></div>
-      </div>
-      <div class="tier-row" data-tier="d">
-        <div class="tier-label tier-d">D</div>
-        <div class="tier-content" data-tier="d"></div>
+    <!-- Tier List Area (for screenshot) -->
+    <div id="tier-list-capture" class="tier-list-capture">
+      <!-- Tier Rows -->
+      <div class="tier-list-modern">
+        <div class="tier-row-modern" data-tier="s-plus">
+          <div class="tier-label-modern tier-s-plus" contenteditable="true" spellcheck="false">S+</div>
+          <div class="tier-content-modern" data-tier="s-plus">
+            <div class="tier-placeholder">Arraste pokémon aqui</div>
+          </div>
+          <span class="tier-count" data-tier="s-plus">0</span>
+        </div>
+        <div class="tier-row-modern" data-tier="s">
+          <div class="tier-label-modern tier-s" contenteditable="true" spellcheck="false">S</div>
+          <div class="tier-content-modern" data-tier="s">
+            <div class="tier-placeholder">Arraste pokémon aqui</div>
+          </div>
+          <span class="tier-count" data-tier="s">0</span>
+        </div>
+        <div class="tier-row-modern" data-tier="a">
+          <div class="tier-label-modern tier-a" contenteditable="true" spellcheck="false">A</div>
+          <div class="tier-content-modern" data-tier="a">
+            <div class="tier-placeholder">Arraste pokémon aqui</div>
+          </div>
+          <span class="tier-count" data-tier="a">0</span>
+        </div>
+        <div class="tier-row-modern" data-tier="b">
+          <div class="tier-label-modern tier-b" contenteditable="true" spellcheck="false">B</div>
+          <div class="tier-content-modern" data-tier="b">
+            <div class="tier-placeholder">Arraste pokémon aqui</div>
+          </div>
+          <span class="tier-count" data-tier="b">0</span>
+        </div>
+        <div class="tier-row-modern" data-tier="c">
+          <div class="tier-label-modern tier-c" contenteditable="true" spellcheck="false">C</div>
+          <div class="tier-content-modern" data-tier="c">
+            <div class="tier-placeholder">Arraste pokémon aqui</div>
+          </div>
+          <span class="tier-count" data-tier="c">0</span>
+        </div>
+        <div class="tier-row-modern" data-tier="d">
+          <div class="tier-label-modern tier-d" contenteditable="true" spellcheck="false">D</div>
+          <div class="tier-content-modern" data-tier="d">
+            <div class="tier-placeholder">Arraste pokémon aqui</div>
+          </div>
+          <span class="tier-count" data-tier="d">0</span>
+        </div>
       </div>
     </div>
 
-    <!-- Pokemon Pool -->
-    <div class="pokemon-pool-section">
-      <h3 class="pool-title">
-        <span>📦</span>
-        Pokémon Disponíveis
-      </h3>
-      <div class="pool-search">
-        <input 
-          type="text" 
-          id="pool-search-input"
-          class="pool-search-input"
-          placeholder="Buscar Pokémon..."
-        >
+    <!-- Pokemon Pool Section -->
+    <div class="pool-section">
+      <div class="pool-header">
+        <h2 class="pool-title-modern">
+          <span>📦</span>
+          Pokémon Disponíveis
+        </h2>
+        <div class="pool-controls">
+          <!-- Type Filter -->
+          <div class="filter-dropdown">
+            <button id="type-filter-btn" class="filter-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+              <span id="filter-label">Todos os Tipos</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div id="type-dropdown" class="dropdown-menu hidden">
+              <button class="dropdown-item active" data-type="all">Todos os Tipos</button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item" data-type="normal">Normal</button>
+              <button class="dropdown-item" data-type="fire">Fire</button>
+              <button class="dropdown-item" data-type="water">Water</button>
+              <button class="dropdown-item" data-type="electric">Electric</button>
+              <button class="dropdown-item" data-type="grass">Grass</button>
+              <button class="dropdown-item" data-type="ice">Ice</button>
+              <button class="dropdown-item" data-type="fighting">Fighting</button>
+              <button class="dropdown-item" data-type="poison">Poison</button>
+              <button class="dropdown-item" data-type="ground">Ground</button>
+              <button class="dropdown-item" data-type="flying">Flying</button>
+              <button class="dropdown-item" data-type="psychic">Psychic</button>
+              <button class="dropdown-item" data-type="bug">Bug</button>
+              <button class="dropdown-item" data-type="rock">Rock</button>
+              <button class="dropdown-item" data-type="ghost">Ghost</button>
+              <button class="dropdown-item" data-type="dragon">Dragon</button>
+              <button class="dropdown-item" data-type="dark">Dark</button>
+              <button class="dropdown-item" data-type="steel">Steel</button>
+              <button class="dropdown-item" data-type="fairy">Fairy</button>
+            </div>
+          </div>
+          
+          <!-- Search -->
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="pool-search-input"
+              class="search-input-modern"
+              placeholder="Buscar pokémon..."
+            >
+          </div>
+          
+          <!-- View Toggle -->
+          <div class="view-toggle">
+            <button id="view-grid" class="view-btn active" title="Grade">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+            <button id="view-compact" class="view-btn" title="Compacto">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
-      <div id="pokemon-pool" class="pokemon-pool">
+      
+      <!-- Pokemon Grid -->
+      <div id="pokemon-pool" class="pokemon-pool-modern">
         <div class="loading">
           <div class="spinner"></div>
           <p class="loading-text">Carregando Pokémon...</p>
@@ -117,19 +239,39 @@
     </div>
   </main>
 
-  <footer class="footer">
-    <p>
-      Pokédex Pro &copy; <script>document.write(new Date().getFullYear())</script> &bull;
-      Dados fornecidos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
-    </p>
-    <p style="margin-top: 0.5rem;">
-      Desenvolvido por <strong>plcunha</strong>
-    </p>
-  </footer>
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Screenshot Modal -->
+  <div id="screenshot-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Sua Tier List</h3>
+        <button id="close-modal" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img id="screenshot-preview" class="screenshot-preview" alt="Tier List Screenshot">
+      </div>
+      <div class="modal-footer">
+        <button id="download-screenshot" class="modal-btn primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download PNG
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="js/api.js"></script>
   <script src="js/ranking.js"></script>
+  
+  <!-- html2canvas for screenshots -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
   <!-- Service Worker Registration -->
   <script>
