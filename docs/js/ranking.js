@@ -423,12 +423,47 @@ function handleTouchMove(e) {
   touchClone.style.left = `${touch.clientX - rect.width / 2}px`;
   touchClone.style.top = `${touch.clientY - rect.height / 2}px`;
   
+  // Auto-scroll when dragging near edges
+  autoScrollOnDrag(touch.clientY);
+  
   // Highlight drop zone
   const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
   const dropZone = elemBelow?.closest('.tier-content-modern, .pokemon-pool-modern');
   
   document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
   if (dropZone) dropZone.classList.add('drag-over');
+}
+
+/**
+ * Auto-scroll page when dragging near top or bottom edges
+ */
+let autoScrollInterval = null;
+
+function autoScrollOnDrag(clientY) {
+  const scrollThreshold = 80; // pixels from edge to trigger scroll
+  const scrollSpeed = 15; // pixels per frame
+  const viewportHeight = window.innerHeight;
+  
+  // Clear any existing scroll interval
+  if (autoScrollInterval) {
+    clearInterval(autoScrollInterval);
+    autoScrollInterval = null;
+  }
+  
+  // Check if near top edge - scroll up
+  if (clientY < scrollThreshold) {
+    const intensity = 1 - (clientY / scrollThreshold); // 0 to 1
+    autoScrollInterval = setInterval(() => {
+      window.scrollBy(0, -scrollSpeed * intensity);
+    }, 16);
+  }
+  // Check if near bottom edge - scroll down
+  else if (clientY > viewportHeight - scrollThreshold) {
+    const intensity = 1 - ((viewportHeight - clientY) / scrollThreshold); // 0 to 1
+    autoScrollInterval = setInterval(() => {
+      window.scrollBy(0, scrollSpeed * intensity);
+    }, 16);
+  }
 }
 
 function handleTouchEnd(e) {
