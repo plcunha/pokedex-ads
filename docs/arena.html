@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pokémon Arena 3D - Visualize Pokémon em um ambiente 3D interativo">
+  <meta name="theme-color" content="#EF4444">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pokédex">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Pokémon Arena 3D">
+  <meta property="og:description" content="Visualize Pokémon em um ambiente 3D interativo">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icons/favicon.svg">
+  
+  <title>Arena 3D - Pokédex Pro</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="apple-touch-icon" href="icons/favicon.svg">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body class="arena-page">
+  <!-- Compact Header -->
+  <header class="arena-header-bar">
+    <a href="index.html" class="ranking-logo">
+      <span class="logo-icon-sm">🔴</span>
+      <span class="logo-text-sm">Pokédex Pro</span>
+    </a>
+    <nav class="ranking-nav">
+      <a href="index.html" class="nav-pill-enhanced">
+        <svg class="nav-pill-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="3"></circle>
+          <line x1="12" y1="2" x2="12" y2="9"></line>
+          <line x1="12" y1="15" x2="12" y2="22"></line>
+        </svg>
+        <span>Pokédex</span>
+      </a>
+      <a href="ranking.html" class="nav-pill-enhanced">
+        <svg class="nav-pill-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+          <path d="M4 22h16"></path>
+          <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+        </svg>
+        <span>Tier List</span>
+      </a>
+      <a href="arena.html" class="nav-pill-enhanced active">
+        <svg class="nav-pill-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="10 8 16 12 10 16 10 8"></polygon>
+        </svg>
+        <span>Arena 3D</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- Arena Container -->
+  <div id="arena-container" class="arena-container">
+    <!-- Three.js canvas will be inserted here -->
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="arena-loading">
+      <div class="arena-loading-content">
+        <div class="spinner"></div>
+        <p>Carregando Arena 3D...</p>
+      </div>
+    </div>
+    
+    <!-- Controls Panel -->
+    <div id="controls-panel" class="arena-controls">
+      <div class="arena-controls-header">
+        <h3>🎮 Controles</h3>
+        <button id="toggle-controls" class="arena-toggle-btn">−</button>
+      </div>
+      <div id="controls-body" class="arena-controls-body">
+        <!-- Pokemon Selector -->
+        <div class="arena-control-group">
+          <label for="pokemon-select">Pokémon</label>
+          <div class="arena-search-wrapper">
+            <input 
+              type="text" 
+              id="pokemon-search" 
+              class="arena-search-input" 
+              placeholder="Buscar por nome ou #..."
+              autocomplete="off"
+            >
+            <div id="pokemon-suggestions" class="arena-suggestions hidden"></div>
+          </div>
+        </div>
+        
+        <!-- Pokemon Info -->
+        <div id="pokemon-info" class="arena-pokemon-info">
+          <div class="arena-pokemon-name">
+            <span id="current-pokemon-id">#025</span>
+            <span id="current-pokemon-name">Pikachu</span>
+          </div>
+          <div id="current-pokemon-types" class="arena-pokemon-types">
+            <span class="type-badge type-electric">Electric</span>
+          </div>
+        </div>
+        
+        <!-- View Controls -->
+        <div class="arena-control-group">
+          <label>Visualização</label>
+          <div class="arena-view-buttons">
+            <button id="view-orbit" class="arena-view-btn active" title="Órbita">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"></path>
+              </svg>
+            </button>
+            <button id="view-front" class="arena-view-btn" title="Frente">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            <button id="view-top" class="arena-view-btn" title="Topo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 11 9-9 9 9"></path>
+                <path d="M12 2v20"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Auto Rotate -->
+        <div class="arena-control-group">
+          <label class="arena-checkbox-label">
+            <input type="checkbox" id="auto-rotate" checked>
+            <span>Rotação automática</span>
+          </label>
+        </div>
+        
+        <!-- Show Stats -->
+        <div class="arena-control-group">
+          <label class="arena-checkbox-label">
+            <input type="checkbox" id="show-stats">
+            <span>Mostrar estatísticas</span>
+          </label>
+        </div>
+        
+        <!-- Random Pokemon -->
+        <button id="random-pokemon" class="arena-random-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3h6l3 7-3 7H3z"></path>
+            <path d="M21 3h-6l-3 7 3 7h6z"></path>
+          </svg>
+          Pokémon Aleatório
+        </button>
+      </div>
+    </div>
+    
+    <!-- Stats Panel (hidden by default) -->
+    <div id="stats-panel" class="arena-stats hidden">
+      <h4>📊 Estatísticas</h4>
+      <div id="stats-bars" class="arena-stats-bars">
+        <!-- Stats will be rendered here -->
+      </div>
+    </div>
+    
+    <!-- Instructions -->
+    <div id="instructions" class="arena-instructions">
+      <p>🖱️ <strong>Arrastar</strong> para rotacionar • <strong>Scroll</strong> para zoom</p>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script type="module" src="js/arena.js"></script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.warn('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
