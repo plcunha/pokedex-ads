@@ -944,12 +944,36 @@ function initializeBattle() {
 }
 
 function createBasicMoves(pokemon) {
-  const type = pokemon.types?.[0] || 'normal';
+  const primaryType = pokemon.types?.[0] || 'normal';
+  const secondaryType = pokemon.types?.[1] || primaryType;
+  
+  // Type-specific move names
+  const typeMoveNames = {
+    normal: 'Pound',
+    fire: 'Ember',
+    water: 'Water Gun',
+    electric: 'Thunder Shock',
+    grass: 'Vine Whip',
+    ice: 'Ice Shard',
+    fighting: 'Karate Chop',
+    poison: 'Poison Sting',
+    ground: 'Mud Slap',
+    flying: 'Gust',
+    psychic: 'Confusion',
+    bug: 'Bug Bite',
+    rock: 'Rock Throw',
+    ghost: 'Lick',
+    dragon: 'Dragon Breath',
+    dark: 'Bite',
+    steel: 'Metal Claw',
+    fairy: 'Fairy Wind'
+  };
+  
   return [
-    { name: 'Tackle', level: 1 },
-    { name: `${type.charAt(0).toUpperCase() + type.slice(1)} Attack`, level: 1 },
-    { name: 'Quick Attack', level: 1 },
-    { name: 'Slam', level: 1 }
+    { name: 'Tackle', type: 'normal', level: 1 },
+    { name: typeMoveNames[primaryType] || 'Scratch', type: primaryType, level: 1 },
+    { name: typeMoveNames[secondaryType] || 'Slam', type: secondaryType, level: 1 },
+    { name: 'Quick Attack', type: 'normal', level: 1 }
   ];
 }
 
@@ -1002,11 +1026,9 @@ function renderAttackButtons() {
     return;
   }
   
-  const playerType = currentPokemon?.types?.[0] || 'normal';
-  
   container.innerHTML = battleState.playerMoves.map((move, index) => `
     <button 
-      class="attack-btn type-${playerType}" 
+      class="attack-btn type-${move.type || 'normal'}" 
       data-move-index="${index}"
       ${!battleState.playerTurn ? 'disabled' : ''}
     >
