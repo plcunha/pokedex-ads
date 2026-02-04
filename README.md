@@ -16,6 +16,7 @@ Uma Pokédex moderna e profissional com duas versões: **Static Site** (GitHub P
 |--------|------|
 | Pokédex | [plcunha.github.io/pokedex-ads/](https://plcunha.github.io/pokedex-ads/) |
 | Tier List | [plcunha.github.io/pokedex-ads/ranking.html](https://plcunha.github.io/pokedex-ads/ranking.html) |
+| Arena 3D | [plcunha.github.io/pokedex-ads/arena.html](https://plcunha.github.io/pokedex-ads/arena.html) |
 
 ## Features
 
@@ -42,6 +43,16 @@ Uma Pokédex moderna e profissional com duas versões: **Static Site** (GitHub P
 - **Touch Support** - Funciona em dispositivos móveis
 - **Persistência** - Salva automaticamente no localStorage
 
+### Arena 3D (Batalhas)
+- **Visualização 3D** - Three.js com sprites animados
+- **Sistema de Batalha** - Turnos com HP, ataques e defesa
+- **Type Effectiveness** - Super efetivo, não muito efetivo, imunidades
+- **STAB Bonus** - 1.5x de dano para ataques do mesmo tipo
+- **Golpes Críticos** - 10% de chance para 1.5x de dano
+- **Movimentos por Tipo** - Ember, Water Gun, Vine Whip, etc.
+- **Animações de Ataque** - Movimento e flash de dano
+- **Busca de Oponente** - Pesquise ou selecione aleatório
+
 ## Arquitetura do Projeto
 
 ```
@@ -51,11 +62,13 @@ pokedex-ads/
 │   ├── js/
 │   │   ├── api.js           # Serviço de API (PokeAPI)
 │   │   ├── app.js           # Aplicação principal
+│   │   ├── arena.js         # Arena 3D com batalhas
 │   │   └── ranking.js       # Tier List (TierMaker-style)
 │   ├── icons/               # Ícones PWA
 │   ├── index.html           # Página principal
 │   ├── pokemon.html         # Página de detalhes
 │   ├── ranking.html         # Tier List Maker
+│   ├── arena.html           # Arena 3D de batalhas
 │   ├── 404.html             # Página de erro
 │   ├── manifest.json        # PWA Manifest
 │   └── sw.js                # Service Worker
@@ -179,6 +192,7 @@ docker-compose --profile dev up pokedex-dev
 - **HTML5** - Estrutura semântica
 - **CSS3** - Flexbox, Grid, variáveis CSS, animações
 - **JavaScript ES6+** - Classes, Async/Await, Modules
+- **Three.js** - Visualização 3D para Arena
 - **PokeAPI** - API de dados Pokémon
 - **PWA** - Service Worker, Web App Manifest
 
