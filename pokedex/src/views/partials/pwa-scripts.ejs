@@ -1,0 +1,166 @@
+<%# PWA Scripts - Include before closing </body> tag %>
+
+<!-- Service Worker Registration & Install Prompt -->
+<script>
+  // Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js', {
+          scope: '/'
+        });
+        console.log('[PWA] Service Worker registered:', registration.scope);
+        
+        // Check for updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          console.log('[PWA] New Service Worker installing...');
+          
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New content available, show update notification
+              showUpdateNotification();
+            }
+          });
+        });
+      } catch (error) {
+        console.error('[PWA] Service Worker registration failed:', error);
+      }
+    });
+  }
+  
+  // PWA Install Prompt
+  let deferredPrompt = null;
+  const installButton = document.getElementById('pwa-install-btn');
+  const installBanner = document.getElementById('pwa-install-banner');
+  
+  window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('[PWA] Install prompt available');
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show install button/banner if exists
+    if (installButton) {
+      installButton.style.display = 'inline-flex';
+    }
+    if (installBanner) {
+      installBanner.style.display = 'flex';
+    }
+  });
+  
+  window.addEventListener('appinstalled', () => {
+    console.log('[PWA] App installed successfully');
+    deferredPrompt = null;
+    
+    // Hide install prompts
+    if (installButton) installButton.style.display = 'none';
+    if (installBanner) installBanner.style.display = 'none';
+    
+    // Track installation
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'pwa_install');
+    }
+  });
+  
+  // Install function (can be called from button click)
+  async function installPWA() {
+    if (!deferredPrompt) {
+      console.log('[PWA] No install prompt available');
+      return;
+    }
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('[PWA] User choice:', outcome);
+    deferredPrompt = null;
+    
+    if (installButton) installButton.style.display = 'none';
+    if (installBanner) installBanner.style.display = 'none';
+  }
+  
+  // Dismiss install banner
+  function dismissInstallBanner() {
+    if (installBanner) {
+      installBanner.style.display = 'none';
+      // Remember dismissal for 7 days
+      localStorage.setItem('pwa-banner-dismissed', Date.now());
+    }
+  }
+  
+  // Check if banner was recently dismissed
+  function shouldShowBanner() {
+    const dismissed = localStorage.getItem('pwa-banner-dismissed');
+    if (!dismissed) return true;
+    const daysSinceDismissed = (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
+    return daysSinceDismissed > 7;
+  }
+  
+  // Show update notification
+  function showUpdateNotification() {
+    const notification = document.createElement('div');
+    notification.id = 'pwa-update-notification';
+    notification.innerHTML = `
+      <div style="
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1E293B;
+        color: #F8FAFC;
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        z-index: 10000;
+        font-family: 'Inter', sans-serif;
+      ">
+        <span>🔄 Nova versão disponível!</span>
+        <button onclick="location.reload()" style="
+          background: #EF4444;
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          font-weight: 500;
+        ">Atualizar</button>
+        <button onclick="this.parentElement.parentElement.remove()" style="
+          background: transparent;
+          color: #94A3B8;
+          border: none;
+          padding: 0.25rem;
+          cursor: pointer;
+          font-size: 1.25rem;
+        ">×</button>
+      </div>
+    `;
+    document.body.appendChild(notification);
+  }
+  
+  // Online/Offline status indicator
+  function updateOnlineStatus() {
+    const isOnline = navigator.onLine;
+    const indicator = document.getElementById('online-status');
+    
+    if (indicator) {
+      indicator.textContent = isOnline ? '🟢 Online' : '🔴 Offline';
+      indicator.style.color = isOnline ? '#22C55E' : '#EF4444';
+    }
+    
+    if (!isOnline) {
+      console.log('[PWA] App is offline');
+    }
+  }
+  
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  
+  // Initial check
+  if (document.readyState === 'complete') {
+    updateOnlineStatus();
+  } else {
+    window.addEventListener('load', updateOnlineStatus);
+  }
+</script>
