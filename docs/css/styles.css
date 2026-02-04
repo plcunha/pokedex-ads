@@ -929,10 +929,123 @@ body {
 
 .header-nav {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
 }
 
+/* Enhanced Navigation Buttons */
+.nav-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-2xl);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.nav-btn-icon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.nav-btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-btn-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s ease;
+  pointer-events: none;
+}
+
+.nav-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25), 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn:hover .nav-btn-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.nav-btn:hover .nav-btn-glow {
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+.nav-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Active state - Pokédex page */
+.nav-btn.active {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  border-color: white;
+  color: var(--color-primary);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn.active .nav-btn-icon {
+  color: var(--color-primary);
+  filter: drop-shadow(0 2px 3px rgba(239, 68, 68, 0.3));
+}
+
+.nav-btn.active:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn.active .nav-btn-glow {
+  display: none;
+}
+
+/* Ranking button special styling when not active */
+.nav-btn[href="ranking.html"]:not(.active) {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 165, 0, 0.1) 100%);
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.nav-btn[href="ranking.html"]:not(.active):hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.35) 0%, rgba(255, 165, 0, 0.2) 100%);
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 8px 25px rgba(255, 165, 0, 0.25), 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .header-nav {
+    gap: 0.5rem;
+  }
+  
+  .nav-btn {
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+  }
+  
+  .nav-btn-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Legacy nav-link support */
 .nav-link {
   padding: 0.5rem 1.25rem;
   font-size: 0.875rem;
@@ -1024,6 +1137,86 @@ body {
 
 .nav-pill svg {
   flex-shrink: 0;
+}
+
+/* Enhanced Nav Pills for Ranking Page Header */
+.nav-pill-enhanced {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.nav-pill-icon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.nav-pill-enhanced:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nav-pill-enhanced:hover .nav-pill-icon {
+  transform: scale(1.15);
+}
+
+.nav-pill-enhanced.active {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  border-color: white;
+  color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+}
+
+.nav-pill-enhanced.active .nav-pill-icon {
+  color: var(--color-primary);
+}
+
+.nav-pill-enhanced.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35);
+}
+
+/* Pokédex button special styling when not active (on ranking page) */
+.nav-pill-enhanced[href="index.html"]:not(.active) {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.1) 100%);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.nav-pill-enhanced[href="index.html"]:not(.active):hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.35) 0%, rgba(220, 38, 38, 0.2) 100%);
+  border-color: rgba(239, 68, 68, 0.6);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.2);
+}
+
+/* Responsive for enhanced pills */
+@media (max-width: 640px) {
+  .nav-pill-enhanced {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+  
+  .nav-pill-enhanced span {
+    display: none;
+  }
+  
+  .nav-pill-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Main Container */
