@@ -9,16 +9,13 @@ import {
   SupportedLocale,
   parseAcceptLanguage,
   isLocaleSupported,
-  getDefaultLocale,
 } from '../services/i18n.service';
 
 // Extend Express Request to include i18n
-declare global {
-  namespace Express {
-    interface Request {
-      i18n: I18nService;
-      locale: SupportedLocale;
-    }
+declare module 'express-serve-static-core' {
+  interface Request {
+    i18n: I18nService;
+    locale: SupportedLocale;
   }
 }
 
