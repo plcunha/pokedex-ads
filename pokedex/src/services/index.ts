@@ -18,6 +18,9 @@ export { metricsService } from './metrics.service';
 export { rateLimiter, RateLimiterService } from './rate-limiter.service';
 export type { RateLimitConfig, RateLimitInfo } from './rate-limiter.service';
 
+// Redis Rate Limiter Store (distributed rate limiting)
+export { RateLimiterRedisStore } from './rate-limiter-redis.store';
+
 // Internationalization (i18n)
 export {
   I18nService,
