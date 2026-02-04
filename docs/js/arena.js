@@ -15,6 +15,28 @@ const POKEMON_SCALE = 4;
 const CAMERA_DISTANCE = 10;
 const ROTATION_SPEED = 0.3;
 
+// Type effectiveness chart (simplified)
+const TYPE_EFFECTIVENESS = {
+  normal: { rock: 0.5, ghost: 0, steel: 0.5 },
+  fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },
+  water: { fire: 2, water: 0.5, grass: 0.5, ground: 2, rock: 2, dragon: 0.5 },
+  electric: { water: 2, electric: 0.5, grass: 0.5, ground: 0, flying: 2, dragon: 0.5 },
+  grass: { fire: 0.5, water: 2, grass: 0.5, poison: 0.5, ground: 2, flying: 0.5, bug: 0.5, rock: 2, dragon: 0.5, steel: 0.5 },
+  ice: { fire: 0.5, water: 0.5, grass: 2, ice: 0.5, ground: 2, flying: 2, dragon: 2, steel: 0.5 },
+  fighting: { normal: 2, ice: 2, poison: 0.5, flying: 0.5, psychic: 0.5, bug: 0.5, rock: 2, ghost: 0, dark: 2, steel: 2, fairy: 0.5 },
+  poison: { grass: 2, poison: 0.5, ground: 0.5, rock: 0.5, ghost: 0.5, steel: 0, fairy: 2 },
+  ground: { fire: 2, electric: 2, grass: 0.5, poison: 2, flying: 0, bug: 0.5, rock: 2, steel: 2 },
+  flying: { electric: 0.5, grass: 2, fighting: 2, bug: 2, rock: 0.5, steel: 0.5 },
+  psychic: { fighting: 2, poison: 2, psychic: 0.5, dark: 0, steel: 0.5 },
+  bug: { fire: 0.5, grass: 2, fighting: 0.5, poison: 0.5, flying: 0.5, psychic: 2, ghost: 0.5, dark: 2, steel: 0.5, fairy: 0.5 },
+  rock: { fire: 2, ice: 2, fighting: 0.5, ground: 0.5, flying: 2, bug: 2, steel: 0.5 },
+  ghost: { normal: 0, psychic: 2, ghost: 2, dark: 0.5 },
+  dragon: { dragon: 2, steel: 0.5, fairy: 0 },
+  dark: { fighting: 0.5, psychic: 2, ghost: 2, dark: 0.5, fairy: 0.5 },
+  steel: { fire: 0.5, water: 0.5, electric: 0.5, ice: 2, rock: 2, steel: 0.5, fairy: 2 },
+  fairy: { fire: 0.5, fighting: 2, poison: 0.5, dragon: 2, dark: 2, steel: 0.5 }
+};
+
 // ============================================
 // STATE
 // ============================================
@@ -1009,6 +1031,30 @@ function calculateDamage(attacker, defender, move) {
   const defenseStat = defender.stats?.find(s => s.name === 'defense')?.value || 50;
   const speedStat = attacker.stats?.find(s => s.name === 'speed')?.value || 50;
   
+  // Get move type (use attacker's first type if move has no type)
+  const moveType = move.type || attacker.types?.[0] || 'normal';
+  
+  // Calculate type effectiveness
+  const defenderTypes = defender.types || ['normal'];
+  let typeMultiplier = 1;
+  let effectivenessMessage = null;
+  
+  for (const defType of defenderTypes) {
+    const effectiveness = TYPE_EFFECTIVENESS[moveType]?.[defType];
+    if (effectiveness !== undefined) {
+      typeMultiplier *= effectiveness;
+    }
+  }
+  
+  // Set effectiveness message
+  if (typeMultiplier >= 2) {
+    effectivenessMessage = 'superEffective';
+  } else if (typeMultiplier > 0 && typeMultiplier < 1) {
+    effectivenessMessage = 'notVeryEffective';
+  } else if (typeMultiplier === 0) {
+    effectivenessMessage = 'noEffect';
+  }
+  
   // Base damage
   const level = 50; // Assume level 50
   const power = 40 + Math.random() * 20; // Random power 40-60
@@ -1016,8 +1062,17 @@ function calculateDamage(attacker, defender, move) {
   // Damage formula (simplified)
   let damage = Math.floor(((2 * level / 5 + 2) * power * attackStat / defenseStat) / 50 + 2);
   
+  // Apply type effectiveness
+  damage = Math.floor(damage * typeMultiplier);
+  
   // Random factor (85-100%)
   damage = Math.floor(damage * (0.85 + Math.random() * 0.15));
+  
+  // STAB bonus (Same Type Attack Bonus) - 1.5x if move type matches attacker's type
+  const attackerTypes = attacker.types || [];
+  if (attackerTypes.includes(moveType)) {
+    damage = Math.floor(damage * 1.5);
+  }
   
   // Critical hit (10% chance, 1.5x damage)
   const isCritical = Math.random() < 0.1;
@@ -1025,7 +1080,12 @@ function calculateDamage(attacker, defender, move) {
     damage = Math.floor(damage * 1.5);
   }
   
-  return { damage, isCritical };
+  // Minimum damage is 1 (unless no effect)
+  if (typeMultiplier > 0 && damage < 1) {
+    damage = 1;
+  }
+  
+  return { damage, isCritical, effectivenessMessage };
 }
 
 async function playerAttack(moveIndex) {
