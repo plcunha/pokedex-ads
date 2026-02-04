@@ -25,8 +25,41 @@ export const config = {
   },
 
   rateLimit: {
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    // Global defaults
+    global: {
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      maxRequests: 100,
+      blockDurationMs: 60 * 1000, // 1 minute block
+      message: 'Muitas requisições, tente novamente mais tarde',
+    },
+    // Per-endpoint overrides
+    endpoints: {
+      // Search endpoint - more restrictive (prevent abuse)
+      search: {
+        pattern: /^\/search/,
+        windowMs: 1 * 60 * 1000, // 1 minute
+        maxRequests: 30,
+        blockDurationMs: 30 * 1000,
+      },
+      // Pokemon detail pages - moderate
+      pokemon: {
+        pattern: /^\/pokemon\//,
+        windowMs: 5 * 60 * 1000, // 5 minutes
+        maxRequests: 60,
+      },
+      // Health/metrics endpoints - lenient (for monitoring)
+      system: {
+        pattern: /^\/(health|metrics)/,
+        windowMs: 1 * 60 * 1000, // 1 minute
+        maxRequests: 120,
+      },
+      // Static assets - very lenient
+      static: {
+        pattern: /\.(css|js|png|jpg|svg|ico|woff|woff2)$/,
+        windowMs: 1 * 60 * 1000,
+        maxRequests: 500,
+      },
+    },
   },
 
   security: {
