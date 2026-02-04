@@ -36,7 +36,7 @@ export const config = {
           defaultSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
           fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-          imgSrc: ["'self'", 'https://raw.githubusercontent.com', 'data:'],
+          imgSrc: ["'self'", 'https://raw.githubusercontent.com', 'data:', 'https://validator.swagger.io'],
           scriptSrc: ["'self'", "'unsafe-inline'"],
         },
       },
@@ -45,3 +45,5 @@ export const config = {
 } as const;
 
 export type Config = typeof config;
+
+export { swaggerSpec } from './swagger';
