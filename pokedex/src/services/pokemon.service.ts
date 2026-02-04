@@ -5,7 +5,7 @@
 
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { config } from '../config';
-import { pokemonCache } from './cache.service';
+import { pokemonCache } from './redis-cache.service';
 import {
   PokemonListResponse,
   PokemonDetail,
@@ -105,37 +105,36 @@ class PokemonService {
     page: number;
     totalPages: number;
   }> {
-    const cacheKey = `list:${page}:${limit}`;
-    const cached = pokemonCache.get(cacheKey);
+    type ListResult = {
+      pokemons: PokemonCardData[];
+      total: number;
+      page: number;
+      totalPages: number;
+    };
     
+    const cacheKey = `list:${page}:${limit}`;
+    
+    // Check cache first
+    const cached = await pokemonCache.get(cacheKey);
     if (cached) {
-      return cached as {
-        pokemons: PokemonCardData[];
-        total: number;
-        page: number;
-        totalPages: number;
-      };
+      return cached as ListResult;
     }
+    
+    // Fetch from API
+    const offset = (page - 1) * limit;
+    const response = await this.api.get<PokemonListResponse>('/pokemon', {
+      params: { offset, limit },
+    });
 
-    try {
-      const offset = (page - 1) * limit;
-      const response = await this.api.get<PokemonListResponse>('/pokemon', {
-        params: { offset, limit },
-      });
-
-      const result = {
-        pokemons: response.data.results.map(item => this.transformToCardData(item)),
-        total: Math.min(response.data.count, config.api.maxLimit),
-        page,
-        totalPages: Math.ceil(Math.min(response.data.count, config.api.maxLimit) / limit),
-      };
-
-      pokemonCache.set(cacheKey, result);
-      return result;
-    } catch (error) {
-      this.handleApiError(error);
-      throw error;
-    }
+    const result: ListResult = {
+      pokemons: response.data.results.map(item => this.transformToCardData(item)),
+      total: Math.min(response.data.count, config.api.maxLimit),
+      page,
+      totalPages: Math.ceil(Math.min(response.data.count, config.api.maxLimit) / limit),
+    };
+    
+    await pokemonCache.set(cacheKey, result);
+    return result;
   }
 
   /**
@@ -143,9 +142,10 @@ class PokemonService {
    */
   async getByNameOrId(identifier: string | number): Promise<PokemonDetailData> {
     const normalizedId = String(identifier).toLowerCase().trim();
-    const cacheKey = `pokemon:${normalizedId}`;
-    const cached = pokemonCache.get(cacheKey);
+    const cacheKey = `detail:${normalizedId}`;
     
+    // Check cache first
+    const cached = await pokemonCache.get(cacheKey);
     if (cached) {
       return cached as PokemonDetailData;
     }
@@ -154,7 +154,7 @@ class PokemonService {
       const response = await this.api.get<PokemonDetail>(`/pokemon/${normalizedId}`);
       const result = this.transformToDetailData(response.data);
       
-      pokemonCache.set(cacheKey, result);
+      await pokemonCache.set(cacheKey, result);
       return result;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {

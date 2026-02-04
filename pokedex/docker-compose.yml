@@ -9,6 +9,9 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - REDIS_ENABLED=true
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"]
@@ -18,6 +21,9 @@ services:
       start_period: 10s
     networks:
       - pokedex-network
+    depends_on:
+      redis:
+        condition: service_healthy
 
   # Development service with hot-reload
   pokedex-dev:
@@ -30,6 +36,9 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3000
+      - REDIS_ENABLED=true
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     volumes:
       - ./src:/app/src:ro
       - ./public:/app/public:ro
@@ -38,7 +47,31 @@ services:
       - dev
     networks:
       - pokedex-network
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # Redis cache service
+  redis:
+    image: redis:7-alpine
+    container_name: pokedex-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - pokedex-network
 
 networks:
   pokedex-network:
     driver: bridge
+
+volumes:
+  redis-data:

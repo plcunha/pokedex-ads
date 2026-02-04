@@ -4,7 +4,16 @@
  */
 
 export { pokemonService } from './pokemon.service';
-export { pokemonCache, CacheService } from './cache.service';
+
+// Cache services - Redis with memory fallback
+export { pokemonCache, RedisCacheService, CacheService } from './redis-cache.service';
+
+// Legacy cache (kept for backward compatibility)
+export { CacheService as LegacyCacheService } from './cache.service';
+
+// Metrics and monitoring
 export { metricsService } from './metrics.service';
+
+// Rate limiting
 export { rateLimiter, RateLimiterService } from './rate-limiter.service';
 export type { RateLimitConfig, RateLimitInfo } from './rate-limiter.service';
