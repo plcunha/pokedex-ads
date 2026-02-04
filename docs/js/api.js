@@ -160,16 +160,41 @@ async function getPokemon(identifier) {
 function transformPokemonDetail(data) {
   const maxStat = 255;
   
+  // Get shiny sprite (official artwork or fallback)
+  const shinyUrl = data.sprites?.other?.['official-artwork']?.front_shiny || 
+                   data.sprites?.front_shiny || 
+                   null;
+  
+  // Get cry/sound URL
+  const cryUrl = data.cries?.latest || data.cries?.legacy || null;
+  
+  // Get moves learned by level-up (limited to first 8)
+  const levelUpMoves = data.moves
+    ?.filter(m => m.version_group_details?.some(
+      v => v.move_learn_method?.name === 'level-up'
+    ))
+    ?.slice(0, 8)
+    ?.map(m => ({
+      name: formatName(m.move.name),
+      level: m.version_group_details
+        .filter(v => v.move_learn_method?.name === 'level-up')
+        .sort((a, b) => a.level_learned_at - b.level_learned_at)[0]?.level_learned_at || 0
+    }))
+    ?.sort((a, b) => a.level - b.level) || [];
+  
   return {
     id: data.id,
     name: data.name,
     displayName: formatName(data.name),
     imageUrl: data.sprites?.other?.['official-artwork']?.front_default || getArtworkUrl(data.id),
+    shinyUrl,
+    cryUrl,
     height: `${(data.height / 10).toFixed(1)} m`,
     weight: `${(data.weight / 10).toFixed(1)} kg`,
     baseExperience: data.base_experience || 0,
     types: data.types?.map(t => t.type.name) || [],
     abilities: data.abilities?.map(a => formatName(a.ability.name)) || [],
+    moves: levelUpMoves,
     stats: data.stats?.map(s => ({
       name: s.stat.name,
       displayName: STAT_NAMES[s.stat.name] || formatName(s.stat.name),

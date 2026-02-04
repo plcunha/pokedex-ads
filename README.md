@@ -200,7 +200,5 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 ---
 
 <p align="center">
-  Desenvolvido com ❤️ por <strong>João Vitor Cunha dos Santos</strong>
-  <br>
-  RA: 21161106-2
+  Desenvolvido com ❤️ por <strong>plcunha</strong>
 </p>

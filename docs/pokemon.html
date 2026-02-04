@@ -27,12 +27,20 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <nav class="nav-back">
+<nav class="nav-back">
     <a href="index.html" class="back-btn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="m15 18-6-6 6-6"></path>
       </svg>
       Voltar
+    </a>
+    <a href="ranking.html" class="back-btn ranking-link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 21v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"></path>
+        <path d="M3 21h18"></path>
+        <path d="M3 7l9-4 9 4"></path>
+      </svg>
+      Ranking
     </a>
   </nav>
 
@@ -52,6 +60,21 @@
             alt=""
             class="pokemon-image"
           >
+          <!-- Shiny Toggle Button -->
+          <button id="shiny-toggle" class="shiny-toggle hidden" title="Ver versão Shiny">
+            <span class="shiny-icon">✨</span>
+            <span class="shiny-label">Shiny</span>
+          </button>
+        </div>
+        <!-- Audio Player for Pokemon Cry -->
+        <div id="pokemon-cry-container" class="pokemon-cry-container hidden">
+          <button id="play-cry-btn" class="play-cry-btn" title="Ouvir som do Pokémon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <span>Ouvir Som</span>
+          </button>
+          <audio id="pokemon-cry" preload="none"></audio>
         </div>
         <span id="pokemon-id" class="pokemon-id"></span>
         <h1 id="pokemon-name" class="pokemon-name"></h1>
@@ -105,6 +128,18 @@
         <!-- Abilities will be rendered here -->
       </div>
     </section>
+
+    <section id="moves-section" class="section hidden">
+      <h2 class="section-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+        Movimentos (por Nível)
+      </h2>
+      <div id="pokemon-moves" class="moves-list">
+        <!-- Moves will be rendered here -->
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -113,7 +148,7 @@
       Dados fornecidos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
     </p>
     <p style="margin-top: 0.5rem;">
-      Desenvolvido por <strong>João Vitor Cunha dos Santos</strong> - RA: 21161106-2
+      Desenvolvido por <strong>plcunha</strong>
     </p>
   </footer>
 
@@ -165,6 +200,35 @@
       img.alt = pokemon.displayName;
       img.onerror = () => { img.src = 'icons/placeholder.svg'; };
       
+      // Store image URLs for shiny toggle
+      img.dataset.normalUrl = pokemon.imageUrl;
+      img.dataset.shinyUrl = pokemon.shinyUrl || '';
+      img.dataset.isShiny = 'false';
+      
+      // Shiny toggle button
+      const shinyToggle = document.getElementById('shiny-toggle');
+      if (pokemon.shinyUrl) {
+        shinyToggle.classList.remove('hidden');
+        shinyToggle.addEventListener('click', toggleShiny);
+      }
+      
+      // Pokemon cry/sound
+      if (pokemon.cryUrl) {
+        const cryContainer = document.getElementById('pokemon-cry-container');
+        const cryAudio = document.getElementById('pokemon-cry');
+        const playCryBtn = document.getElementById('play-cry-btn');
+        
+        cryAudio.src = pokemon.cryUrl;
+        cryContainer.classList.remove('hidden');
+        
+        playCryBtn.addEventListener('click', () => {
+          cryAudio.currentTime = 0;
+          cryAudio.play().catch(e => console.warn('Audio play failed:', e));
+          playCryBtn.classList.add('playing');
+          setTimeout(() => playCryBtn.classList.remove('playing'), 1000);
+        });
+      }
+      
       // Pokemon info
       document.getElementById('pokemon-id').textContent = `#${String(pokemon.id).padStart(3, '0')}`;
       document.getElementById('pokemon-name').textContent = pokemon.displayName;
@@ -209,10 +273,43 @@
         .map(ability => `<span class="ability-badge">${ability}</span>`)
         .join('');
       
+      // Moves
+      if (pokemon.moves && pokemon.moves.length > 0) {
+        const movesSection = document.getElementById('moves-section');
+        const movesContainer = document.getElementById('pokemon-moves');
+        
+        movesContainer.innerHTML = pokemon.moves
+          .map(move => `
+            <div class="move-badge">
+              <span class="move-name">${move.name}</span>
+              <span class="move-level">Lv. ${move.level}</span>
+            </div>
+          `)
+          .join('');
+        
+        movesSection.classList.remove('hidden');
+      }
+      
       // Show content
       document.getElementById('pokemon-loading').classList.add('hidden');
       document.getElementById('pokemon-content').classList.remove('hidden');
       document.getElementById('main').classList.remove('hidden');
+    }
+    
+    function toggleShiny() {
+      const img = document.getElementById('pokemon-image');
+      const shinyToggle = document.getElementById('shiny-toggle');
+      const isShiny = img.dataset.isShiny === 'true';
+      
+      if (isShiny) {
+        img.src = img.dataset.normalUrl;
+        img.dataset.isShiny = 'false';
+        shinyToggle.classList.remove('active');
+      } else {
+        img.src = img.dataset.shinyUrl;
+        img.dataset.isShiny = 'true';
+        shinyToggle.classList.add('active');
+      }
     }
     
     function showError(message) {
