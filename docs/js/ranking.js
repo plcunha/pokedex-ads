@@ -255,6 +255,8 @@ function createPokemonCard(pokemon, compact = false) {
         alt="${pokemon.displayName}"
         class="tier-pokemon-img"
         loading="lazy"
+        decoding="async"
+        fetchpriority="low"
         onerror="this.src='icons/placeholder.svg'"
       >
       ${!compact ? `<span class="tier-pokemon-name">${pokemon.displayName}</span>` : ''}

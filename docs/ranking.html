@@ -18,13 +18,24 @@
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Fonts -->
+  <!-- Resource Hints for Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://pokeapi.co">
+  <link rel="preconnect" href="https://raw.githubusercontent.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://pokeapi.co">
+  <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+  
+  <!-- Fonts with display=swap for faster rendering -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="js/api.js" as="script">
+  <link rel="preload" href="js/ranking.js" as="script">
 </head>
 <body class="ranking-page">
   <!-- Compact Header -->
@@ -279,12 +290,12 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="js/api.js"></script>
-  <script src="js/ranking.js"></script>
+  <!-- Scripts (defer for non-blocking load) -->
+  <script src="js/api.js" defer></script>
+  <script src="js/ranking.js" defer></script>
   
-  <!-- html2canvas for screenshots -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- html2canvas for screenshots (defer, non-critical) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   
   <!-- Service Worker Registration -->
   <script>

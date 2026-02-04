@@ -3,6 +3,26 @@
  * Handles UI rendering and user interactions
  */
 
+// Image lazy loading with IntersectionObserver for better performance
+const imageObserver = 'IntersectionObserver' in window 
+  ? new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            img.classList.add('loaded');
+          }
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: '100px', // Load images 100px before they enter viewport
+      threshold: 0.01
+    })
+  : null;
+
 document.addEventListener('DOMContentLoaded', () => {
   const app = new PokedexApp();
   app.init();
@@ -145,6 +165,13 @@ class PokedexApp {
     if (!grid) return;
     
     grid.innerHTML = pokemons.map(pokemon => this.createPokemonCard(pokemon)).join('');
+    
+    // Setup IntersectionObserver for lazy loading
+    if (imageObserver) {
+      grid.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
   }
 
   createPokemonCard(pokemon) {
@@ -152,15 +179,23 @@ class PokedexApp {
       .map(type => `<span class="type-badge type-${type}">${type}</span>`)
       .join('');
     
+    // Use IntersectionObserver for smarter lazy loading if available
+    const useObserver = !!imageObserver;
+    const imgSrc = useObserver ? 'icons/placeholder.svg' : pokemon.imageUrl;
+    const dataSrc = useObserver ? `data-src="${pokemon.imageUrl}"` : '';
+    
     return `
       <li class="pokemon-card">
         <a href="pokemon.html?pokemon=${pokemon.name}" class="pokemon-link">
           <div class="pokemon-image-wrapper">
             <img 
-              src="${pokemon.imageUrl}" 
+              src="${imgSrc}"
+              ${dataSrc}
               alt="${pokemon.displayName}"
               class="pokemon-image"
               loading="lazy"
+              decoding="async"
+              fetchpriority="low"
               onerror="this.src='icons/placeholder.svg'"
             >
           </div>

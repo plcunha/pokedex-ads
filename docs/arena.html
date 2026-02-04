@@ -24,13 +24,24 @@
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Fonts -->
+  <!-- Resource Hints for Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://pokeapi.co">
+  <link rel="preconnect" href="https://raw.githubusercontent.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://pokeapi.co">
+  <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  
+  <!-- Fonts with display=swap for faster rendering -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="js/api.js" as="script">
   
   <!-- Three.js Import Map -->
   <script type="importmap">
@@ -194,8 +205,8 @@
   <!-- Toast Container -->
   <div id="toast-container" class="toast-container"></div>
 
-  <!-- Scripts -->
-  <script src="js/api.js"></script>
+  <!-- Scripts (api.js deferred, arena.js is module) -->
+  <script src="js/api.js" defer></script>
   <script type="module" src="js/arena.js"></script>
   
   <!-- Service Worker Registration -->

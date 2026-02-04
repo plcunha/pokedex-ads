@@ -229,8 +229,14 @@ body {
   width: 85%;
   height: 85%;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  opacity: 0.6;
+}
+
+.pokemon-image.loaded,
+.pokemon-image:not([data-src]) {
+  opacity: 1;
 }
 
 .pokemon-card:hover .pokemon-image {

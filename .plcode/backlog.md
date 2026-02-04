@@ -86,6 +86,14 @@
 - [x] Navigation updated across all pages
 - [x] Responsive design for mobile
 
+### Sessão 12 - Performance Optimizations
+- [x] Resource hints (preconnect, preload, dns-prefetch) for PokeAPI, GitHub, CDNs
+- [x] Image optimization with decoding=async and fetchpriority attributes
+- [x] Script defer for non-blocking page load
+- [x] IntersectionObserver-based lazy loading for Pokémon images
+- [x] Service worker v1.1.0 with full asset caching (arena, ranking pages)
+- [x] CSS image fade-in transition for smoother UX
+
 ## 📊 Métricas Atuais
 
 | Métrica | Valor |
@@ -110,12 +118,7 @@
    - Background sync
    - Enhanced offline mode
 
-3. **Performance Optimizations**
-   - Image optimization
-   - Lazy loading
-   - Response caching headers
-
-4. **Arena 3D Enhancements**
+3. **Arena 3D Enhancements**
    - Battle simulation (simple turn-based)
    - Multiple Pokémon in arena
    - Attack animations

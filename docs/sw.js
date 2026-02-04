@@ -3,7 +3,7 @@
  * Provides offline support and caching
  */
 
-const CACHE_VERSION = 'v1.0.0';
+const CACHE_VERSION = 'v1.1.0';
 const STATIC_CACHE = `pokedex-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `pokedex-dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE = `pokedex-images-${CACHE_VERSION}`;
@@ -13,10 +13,14 @@ const STATIC_ASSETS = [
   './',
   './index.html',
   './pokemon.html',
+  './ranking.html',
+  './arena.html',
   './404.html',
   './css/styles.css',
   './js/api.js',
   './js/app.js',
+  './js/ranking.js',
+  './js/arena.js',
   './manifest.json',
   './icons/placeholder.svg'
 ];
@@ -104,7 +108,9 @@ function isStaticAsset(url) {
   return staticExtensions.some(ext => url.pathname.endsWith(ext)) ||
          staticPaths.some(path => url.pathname.endsWith(path)) ||
          url.hostname === 'fonts.googleapis.com' ||
-         url.hostname === 'fonts.gstatic.com';
+         url.hostname === 'fonts.gstatic.com' ||
+         url.hostname === 'unpkg.com' ||
+         url.hostname === 'cdnjs.cloudflare.com';
 }
 
 /**
