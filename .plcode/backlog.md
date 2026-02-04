@@ -44,7 +44,6 @@
 - [x] Standard rate limit headers (X-RateLimit-Limit, Remaining, Reset)
 - [x] JSON and HTML error responses for 429 status
 - [x] 16 unit tests for rate limiter service
-- [x] Total: 82 unit tests passing
 - [x] ✅ MERGED into main
 
 ### Sessão 7 - Dependency Updates
@@ -59,11 +58,26 @@
 - [x] Pokemon detail enhancements (shiny toggle, cry audio, moves)
 - [x] Deployed at https://plcunha.github.io/pokedex-ads/
 
+### Sessão 9 - Redis Caching
+- [x] RedisCacheService with memory fallback
+- [x] Seamless switching between Redis and in-memory
+- [x] ioredis package integrated
+- [x] ✅ MERGED into main
+
+### Sessão 10 - Internationalization (i18n)
+- [x] I18nService with PT-BR and EN support
+- [x] i18nMiddleware for auto-detect language
+- [x] Cookie-based language preference
+- [x] Views updated with translations
+- [x] 51 new tests for i18n service
+- [x] Total: 133 unit tests passing
+- [x] ✅ MERGED into main
+
 ## 📊 Métricas Atuais
 
 | Métrica | Valor |
 |---------|-------|
-| Testes Unitários | 82 passando |
+| Testes Unitários | 133 passando |
 | Testes E2E | 17 passando |
 | Coverage (statements) | 84.18% |
 | Coverage (branches) | 73.41% |
@@ -72,22 +86,18 @@
 
 ## 📋 Pendente (Priorizado)
 
-### Média Prioridade
-1. **Caching com Redis**
-   - Substituir cache in-memory por Redis
-   - Cache invalidation strategies
-   - Cache warming
-
-2. **Redis Backend for Rate Limiter**
+### Baixa Prioridade
+1. **Redis Backend for Rate Limiter**
    - Distributed rate limiting support
    - Persist rate limit state across restarts
+   - Branch exists: feature/redis-rate-limiter (needs cleanup/rebase)
 
-### Baixa Prioridade
-3. **Internacionalização (i18n)**
-   - Suporte a múltiplos idiomas
-   - Traduções para PT-BR e EN
-
-4. **Additional PWA Features**
+2. **Additional PWA Features**
    - Push notifications
    - Background sync
    - Enhanced offline mode
+
+3. **Performance Optimizations**
+   - Image optimization
+   - Lazy loading
+   - Response caching headers
