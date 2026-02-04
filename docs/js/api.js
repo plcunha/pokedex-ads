@@ -268,6 +268,7 @@ function updateUrl(params) {
 window.PokedexAPI = {
   getPokemonList,
   getPokemon,
+  getPokemonByIdOrName: getPokemon, // Alias for arena.js
   searchPokemon,
   formatName,
   getArtworkUrl,

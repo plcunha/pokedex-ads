@@ -185,6 +185,17 @@
           </svg>
           Pokémon Aleatório
         </button>
+        
+        <!-- Battle Mode Button -->
+        <button id="start-battle-mode" class="arena-battle-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <path d="M12 18v-6"></path>
+            <path d="m9 15 3-3 3 3"></path>
+          </svg>
+          Modo Batalha
+        </button>
       </div>
     </div>
     
@@ -193,6 +204,96 @@
       <h4>📊 Estatísticas</h4>
       <div id="stats-bars" class="arena-stats-bars">
         <!-- Stats will be rendered here -->
+      </div>
+    </div>
+    
+    <!-- Battle Panel -->
+    <div id="battle-panel" class="battle-panel hidden">
+      <!-- Player Pokemon (Left) -->
+      <div class="battle-pokemon battle-pokemon-player">
+        <div class="battle-pokemon-header">
+          <span class="battle-pokemon-label">Seu Pokémon</span>
+          <span id="player-pokemon-name" class="battle-pokemon-name">Pikachu</span>
+        </div>
+        <div class="battle-hp-container">
+          <div class="battle-hp-bar">
+            <div id="player-hp-fill" class="battle-hp-fill" style="width: 100%"></div>
+          </div>
+          <span id="player-hp-text" class="battle-hp-text">100 / 100</span>
+        </div>
+      </div>
+      
+      <!-- VS Indicator -->
+      <div class="battle-vs">
+        <span>⚔️</span>
+        <span class="battle-vs-text">VS</span>
+      </div>
+      
+      <!-- Opponent Pokemon (Right) -->
+      <div class="battle-pokemon battle-pokemon-opponent">
+        <div class="battle-pokemon-header">
+          <span class="battle-pokemon-label">Oponente</span>
+          <span id="opponent-pokemon-name" class="battle-pokemon-name">???</span>
+        </div>
+        <div class="battle-hp-container">
+          <div class="battle-hp-bar">
+            <div id="opponent-hp-fill" class="battle-hp-fill opponent" style="width: 100%"></div>
+          </div>
+          <span id="opponent-hp-text" class="battle-hp-text">??? / ???</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Battle Controls (Bottom) -->
+    <div id="battle-controls" class="battle-controls hidden">
+      <div class="battle-controls-inner">
+        <!-- Battle Log -->
+        <div id="battle-log" class="battle-log">
+          <p class="battle-log-entry">⚡ Selecione um oponente para iniciar a batalha!</p>
+        </div>
+        
+        <!-- Attack Buttons -->
+        <div id="attack-buttons" class="attack-buttons">
+          <button class="attack-btn" disabled>Selecione um oponente</button>
+        </div>
+        
+        <!-- Battle Actions -->
+        <div class="battle-actions">
+          <button id="btn-end-battle" class="battle-action-btn end">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Fugir
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Opponent Selector Panel -->
+    <div id="opponent-panel" class="opponent-panel hidden">
+      <div class="opponent-panel-header">
+        <h4>🎯 Escolher Oponente</h4>
+        <button id="close-opponent-panel" class="arena-toggle-btn">×</button>
+      </div>
+      <div class="opponent-panel-body">
+        <div class="arena-search-wrapper">
+          <input 
+            type="text" 
+            id="opponent-search" 
+            class="arena-search-input" 
+            placeholder="Buscar oponente..."
+            autocomplete="off"
+          >
+          <div id="opponent-suggestions" class="arena-suggestions hidden"></div>
+        </div>
+        <button id="random-opponent" class="arena-random-btn opponent-random">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3h6l3 7-3 7H3z"></path>
+            <path d="M21 3h-6l-3 7 3 7h6z"></path>
+          </svg>
+          Oponente Aleatório
+        </button>
       </div>
     </div>
     

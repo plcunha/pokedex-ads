@@ -94,6 +94,19 @@
 - [x] Service worker v1.1.0 with full asset caching (arena, ranking pages)
 - [x] CSS image fade-in transition for smoother UX
 
+### Sessão 13 - Arena 3D Battle Simulation
+- [x] Battle Mode toggle button in controls panel
+- [x] Battle UI: HP bars, VS indicator, battle log
+- [x] Opponent selector panel with search and random option
+- [x] Turn-based combat system with damage calculation
+- [x] Attack buttons based on Pokemon moves (4 moves)
+- [x] Attack animations (sprite movement, color flash)
+- [x] HP bar animations with color changes (green/yellow/red)
+- [x] Victory/Defeat overlay with continue button
+- [x] Opponent Pokemon displayed as second sprite in arena
+- [x] Camera repositioning for battle view
+- [x] Battle result tracking and end battle functionality
+
 ## 📊 Métricas Atuais
 
 | Métrica | Valor |
@@ -118,8 +131,8 @@
    - Background sync
    - Enhanced offline mode
 
-3. **Arena 3D Enhancements**
-   - Battle simulation (simple turn-based)
-   - Multiple Pokémon in arena
-   - Attack animations
-   - Sound effects
+3. **Arena 3D Enhancements (Future)**
+   - Sound effects for battles
+   - Type effectiveness multipliers
+   - Multi-Pokemon battles (2v2)
+   - Battle history/statistics
