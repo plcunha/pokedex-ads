@@ -214,9 +214,9 @@ describe('API Routes Integration Tests', () => {
         .get('/health')
         .expect(200);
 
-      // Rate limiter adds standard headers
-      expect(response.headers).toHaveProperty('ratelimit-limit');
-      expect(response.headers).toHaveProperty('ratelimit-remaining');
+      // Rate limiter adds standard headers (X-RateLimit-* format, lowercase in response)
+      expect(response.headers).toHaveProperty('x-ratelimit-limit');
+      expect(response.headers).toHaveProperty('x-ratelimit-remaining');
     });
   });
 });
