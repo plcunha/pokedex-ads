@@ -1,39 +1,102 @@
-# Pokédex Pro 🎮
+# Pokédex Pro
 
-Uma Pokédex moderna e profissional construída com **Express.js** e **TypeScript**.
+Uma Pokédex moderna e profissional com duas versões: **Static Site** (GitHub Pages) e **Express.js API** (Backend).
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![CI](https://github.com/YOUR_USERNAME/pokedex-ads/actions/workflows/ci.yml/badge.svg)
-![Tests](https://img.shields.io/badge/tests-66%20passing-brightgreen.svg)
 
-## ✨ Features
+## Demo
 
-- 🎨 **UI Moderna** - Design escuro elegante com animações suaves
-- ⚡ **Performance** - Cache inteligente e compressão de respostas
-- 🔒 **Segurança** - Helmet, rate limiting e sanitização de entrada
-- 📱 **Responsivo** - Funciona perfeitamente em todos os dispositivos
-- 🔍 **Busca Inteligente** - Busca por nome ou número do Pokémon
-- 📊 **Estatísticas Visuais** - Barras animadas para stats do Pokémon
-- 🎯 **TypeScript** - Tipagem forte para código mais seguro
+**[Acesse a Pokédex Online](https://YOUR_USERNAME.github.io/pokedex-ads/)**
 
-## 🏗️ Arquitetura
+## Features
+
+- **UI Moderna** - Design escuro elegante com animações suaves
+- **PWA Ready** - Funciona offline com Service Worker
+- **Performance** - Cache inteligente e lazy loading de imagens
+- **Responsivo** - Funciona perfeitamente em todos os dispositivos
+- **Busca Inteligente** - Busca por nome ou número do Pokémon
+- **Estatísticas Visuais** - Barras animadas para stats do Pokémon
+- **Cores por Tipo** - Cards coloridos de acordo com o tipo do Pokémon
+
+## Arquitetura do Projeto
 
 ```
-src/
-├── config/           # Configurações da aplicação
-├── controllers/      # Controladores HTTP
-├── middlewares/      # Middlewares Express
-├── routes/           # Definições de rotas
-├── services/         # Lógica de negócio e API
-├── types/            # Definições TypeScript
-├── views/            # Templates EJS
-└── app.ts            # Entry point
+pokedex-ads/
+├── docs/                    # Static Site (GitHub Pages)
+│   ├── css/styles.css       # Estilos CSS
+│   ├── js/
+│   │   ├── api.js           # Serviço de API (PokeAPI)
+│   │   └── app.js           # Aplicação principal
+│   ├── icons/               # Ícones PWA
+│   ├── index.html           # Página principal
+│   ├── pokemon.html         # Página de detalhes
+│   ├── 404.html             # Página de erro
+│   ├── manifest.json        # PWA Manifest
+│   └── sw.js                # Service Worker
+│
+├── pokedex/                 # Express.js Backend (Opcional)
+│   ├── src/
+│   │   ├── config/          # Configurações
+│   │   ├── controllers/     # Controladores HTTP
+│   │   ├── middlewares/     # Middlewares Express
+│   │   ├── routes/          # Rotas da API
+│   │   ├── services/        # Lógica de negócio
+│   │   ├── types/           # Tipos TypeScript
+│   │   ├── views/           # Templates EJS
+│   │   └── app.ts           # Entry point
+│   └── tests/               # Testes unitários e integração
+│
+└── .github/workflows/       # CI/CD Pipeline
 ```
 
-## 🚀 Quick Start
+---
+
+## Static Site (GitHub Pages)
+
+A versão estática é ideal para hospedagem gratuita no GitHub Pages. Consome a PokeAPI diretamente do navegador.
+
+### Como funciona
+
+1. **HTML/CSS/JS puro** - Sem necessidade de servidor
+2. **PokeAPI** - Dados obtidos diretamente da API pública
+3. **Cache Local** - SessionStorage para performance
+4. **PWA** - Service Worker para funcionalidade offline
+
+### Executar Localmente
+
+```bash
+# Opção 1: Python
+cd docs
+python -m http.server 8000
+# Acesse: http://localhost:8000
+
+# Opção 2: Node.js (npx)
+npx serve docs
+# Acesse: http://localhost:3000
+
+# Opção 3: VS Code Live Server
+# Instale a extensão "Live Server" e clique em "Go Live"
+```
+
+### Deploy no GitHub Pages
+
+O deploy é automático via GitHub Actions quando você faz push para a branch `main`.
+
+**Configuração manual (se necessário):**
+
+1. Vá em **Settings** > **Pages** no seu repositório
+2. Em **Source**, selecione **GitHub Actions**
+3. O workflow `.github/workflows/ci.yml` fará o deploy automaticamente
+
+---
+
+## Express.js Backend (Opcional)
+
+A versão backend é útil para desenvolvimento local com hot-reload e features avançadas.
 
 ### Pré-requisitos
 
@@ -43,7 +106,6 @@ src/
 ### Instalação
 
 ```bash
-# Clone o repositório
 cd pokedex
 
 # Instale as dependências
@@ -68,60 +130,7 @@ O servidor estará rodando em `http://localhost:3000`
 | `npm run test:watch` | Executa testes em modo watch |
 | `npm run test:coverage` | Executa testes com cobertura |
 
-## 🧪 Testes
-
-O projeto utiliza **Vitest** como framework de testes:
-
-```bash
-# Executar todos os testes
-npm test
-
-# Executar testes em modo watch
-npm run test:watch
-
-# Executar com cobertura
-npm run test:coverage
-```
-
-### Estrutura de Testes
-
-```
-tests/
-├── integration/          # Testes de integração (rotas HTTP)
-├── mocks/                # Dados mock para testes
-└── unit/                 # Testes unitários (services)
-```
-
-## 🐳 Docker
-
-### Produção
-
-```bash
-# Build e execução
-docker-compose up -d
-
-# Ou apenas build
-docker build -t pokedex-pro .
-docker run -p 3000:3000 pokedex-pro
-```
-
-### Desenvolvimento
-
-```bash
-# Com hot-reload
-docker-compose --profile dev up pokedex-dev
-```
-
-## 🛠️ Tecnologias
-
-- **[Express.js](https://expressjs.com/)** - Framework web
-- **[TypeScript](https://www.typescriptlang.org/)** - Tipagem estática
-- **[EJS](https://ejs.co/)** - Template engine
-- **[Axios](https://axios-http.com/)** - Cliente HTTP
-- **[Helmet](https://helmetjs.github.io/)** - Segurança HTTP
-- **[PokeAPI](https://pokeapi.co/)** - API de dados Pokémon
-
-## 📁 Endpoints
+### Endpoints da API
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
@@ -130,16 +139,61 @@ docker-compose --profile dev up pokedex-dev
 | GET | `/search?query=` | Busca por nome ou número |
 | GET | `/health` | Status da aplicação |
 
-## ⚙️ Configuração
+### Docker
 
-A aplicação pode ser configurada via variáveis de ambiente:
+```bash
+# Produção
+docker-compose up -d
+
+# Desenvolvimento (com hot-reload)
+docker-compose --profile dev up pokedex-dev
+```
+
+---
+
+## Tecnologias
+
+### Static Site
+- **HTML5** - Estrutura semântica
+- **CSS3** - Flexbox, Grid, variáveis CSS, animações
+- **JavaScript ES6+** - Classes, Async/Await, Modules
+- **PokeAPI** - API de dados Pokémon
+- **PWA** - Service Worker, Web App Manifest
+
+### Backend
+- **[Express.js](https://expressjs.com/)** - Framework web
+- **[TypeScript](https://www.typescriptlang.org/)** - Tipagem estática
+- **[EJS](https://ejs.co/)** - Template engine
+- **[Axios](https://axios-http.com/)** - Cliente HTTP
+- **[Helmet](https://helmetjs.github.io/)** - Segurança HTTP
+- **[Vitest](https://vitest.dev/)** - Framework de testes
+
+---
+
+## CI/CD Pipeline
+
+O projeto usa GitHub Actions para:
+
+1. **Lint & Typecheck** - Verifica qualidade do código
+2. **Testes** - Executa testes unitários e de integração
+3. **Build** - Compila TypeScript
+4. **Security Audit** - Verifica vulnerabilidades
+5. **Deploy** - Publica no GitHub Pages (branch main)
+
+---
+
+## Configuração
+
+### Variáveis de Ambiente (Backend)
 
 | Variável | Padrão | Descrição |
 |----------|--------|-----------|
 | `PORT` | `3000` | Porta do servidor |
 | `NODE_ENV` | `development` | Ambiente de execução |
 
-## 📝 Licença
+---
+
+## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 

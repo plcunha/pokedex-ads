@@ -1,0 +1,37 @@
+{
+  "name": "Pokédex Pro",
+  "short_name": "Pokédex",
+  "description": "Explore todos os Pokémon com informações detalhadas - sua Pokédex completa e profissional",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0F172A",
+  "theme_color": "#EF4444",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "pt-BR",
+  "categories": ["games", "entertainment", "education"],
+  "icons": [
+    {
+      "src": "icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Buscar Pokémon",
+      "short_name": "Buscar",
+      "description": "Buscar Pokémon por nome ou número",
+      "url": "./index.html?focus=search"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

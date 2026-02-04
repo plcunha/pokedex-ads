@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pokédex Pro - Explore todos os Pokémon com informações detalhadas">
+  <meta name="theme-color" content="#EF4444">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pokédex">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Pokédex Pro">
+  <meta property="og:description" content="Explore todos os Pokémon com informações detalhadas">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icons/favicon.svg">
+  
+  <title>Pokédex Pro</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="apple-touch-icon" href="icons/favicon.svg">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🔴</div>
+        <h1 class="logo-text">Pokédex Pro</h1>
+      </a>
+      <form id="search-form" class="search-form">
+        <input 
+          type="text" 
+          id="search-input"
+          name="query" 
+          class="search-input"
+          placeholder="Buscar Pokémon por nome ou número..."
+          autocomplete="off"
+        >
+        <button type="submit" class="search-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          Buscar
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <main class="main">
+    <ul id="pokemon-grid" class="pokemon-grid">
+      <!-- Pokemon cards will be rendered here by JavaScript -->
+      <li class="loading" style="grid-column: 1 / -1;">
+        <div class="spinner"></div>
+        <p class="loading-text">Carregando Pokémon...</p>
+      </li>
+    </ul>
+
+    <nav id="pagination" class="pagination">
+      <!-- Pagination will be rendered here by JavaScript -->
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <p>
+      Pokédex Pro &copy; <script>document.write(new Date().getFullYear())</script> &bull;
+      Dados fornecidos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
+    </p>
+    <p style="margin-top: 0.5rem;">
+      Desenvolvido por <strong>João Vitor Cunha dos Santos</strong> - RA: 21161106-2
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.warn('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

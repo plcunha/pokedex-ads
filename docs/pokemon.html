@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Informações detalhadas do Pokémon - Pokédex Pro">
+  <meta name="theme-color" content="#EF4444">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pokédex">
+  
+  <title>Pokémon - Pokédex Pro</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="apple-touch-icon" href="icons/favicon.svg">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="nav-back">
+    <a href="index.html" class="back-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+      Voltar
+    </a>
+  </nav>
+
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <div id="pokemon-loading" class="loading">
+        <div class="spinner"></div>
+        <p class="loading-text">Carregando Pokémon...</p>
+      </div>
+      
+      <div id="pokemon-content" class="hidden">
+        <div class="pokemon-image-container">
+          <div class="pokemon-image-bg"></div>
+          <img 
+            id="pokemon-image"
+            src="" 
+            alt=""
+            class="pokemon-image"
+          >
+        </div>
+        <span id="pokemon-id" class="pokemon-id"></span>
+        <h1 id="pokemon-name" class="pokemon-name"></h1>
+        <div id="pokemon-types" class="pokemon-types"></div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main" class="main hidden">
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📏</div>
+        <p class="info-card-label">Altura</p>
+        <p id="pokemon-height" class="info-card-value">-</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚖️</div>
+        <p class="info-card-label">Peso</p>
+        <p id="pokemon-weight" class="info-card-value">-</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⭐</div>
+        <p class="info-card-label">Experiência Base</p>
+        <p id="pokemon-exp" class="info-card-value">-</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <h2 class="section-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"></path>
+          <path d="m19 9-5 5-4-4-3 3"></path>
+        </svg>
+        Estatísticas Base
+      </h2>
+      <div id="pokemon-stats" class="stats-list">
+        <!-- Stats will be rendered here -->
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 2 7l10 5 10-5-10-5Z"></path>
+          <path d="m2 17 10 5 10-5"></path>
+          <path d="m2 12 10 5 10-5"></path>
+        </svg>
+        Habilidades
+      </h2>
+      <div id="pokemon-abilities" class="abilities-list">
+        <!-- Abilities will be rendered here -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>
+      Pokédex Pro &copy; <script>document.write(new Date().getFullYear())</script> &bull;
+      Dados fornecidos por <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a>
+    </p>
+    <p style="margin-top: 0.5rem;">
+      Desenvolvido por <strong>João Vitor Cunha dos Santos</strong> - RA: 21161106-2
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = PokedexAPI.getUrlParams();
+      const pokemonName = params.pokemon || new URLSearchParams(window.location.search).get('pokemon');
+      
+      if (!pokemonName) {
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      try {
+        const pokemon = await PokedexAPI.getPokemon(pokemonName);
+        renderPokemon(pokemon);
+      } catch (error) {
+        showError(error.message);
+      }
+    });
+    
+    function renderPokemon(pokemon) {
+      // Update page title
+      document.title = `${pokemon.displayName} #${String(pokemon.id).padStart(3, '0')} - Pokédex Pro`;
+      
+      // Update meta description
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.content = `${pokemon.displayName} - Informações detalhadas, stats e habilidades`;
+      }
+      
+      // Hero section
+      const heroStyle = document.getElementById('hero');
+      if (pokemon.types[0]) {
+        heroStyle.style.setProperty('--hero-type-color', `var(--type-${pokemon.types[0]})`);
+        heroStyle.querySelector('.hero::before') && 
+          (heroStyle.style.background = `linear-gradient(135deg, var(--type-${pokemon.types[0]}) 0%, rgba(15, 23, 42, 0.9) 100%)`);
+      }
+      
+      // Update hero before pseudo-element via CSS variable
+      document.documentElement.style.setProperty('--pokemon-type-color', `var(--type-${pokemon.types[0] || 'normal'})`);
+      heroStyle.style.cssText = `--hero-color: var(--type-${pokemon.types[0] || 'normal'})`;
+      
+      // Pokemon image
+      const img = document.getElementById('pokemon-image');
+      img.src = pokemon.imageUrl;
+      img.alt = pokemon.displayName;
+      img.onerror = () => { img.src = 'icons/placeholder.svg'; };
+      
+      // Pokemon info
+      document.getElementById('pokemon-id').textContent = `#${String(pokemon.id).padStart(3, '0')}`;
+      document.getElementById('pokemon-name').textContent = pokemon.displayName;
+      
+      // Types
+      const typesContainer = document.getElementById('pokemon-types');
+      typesContainer.innerHTML = pokemon.types
+        .map(type => `<span class="type-badge type-${type}">${type}</span>`)
+        .join('');
+      
+      // Info cards
+      document.getElementById('pokemon-height').textContent = pokemon.height;
+      document.getElementById('pokemon-weight').textContent = pokemon.weight;
+      document.getElementById('pokemon-exp').textContent = pokemon.baseExperience || '-';
+      
+      // Stats
+      const statsContainer = document.getElementById('pokemon-stats');
+      statsContainer.innerHTML = pokemon.stats.map(stat => `
+        <div class="stat-row">
+          <span class="stat-name">${stat.displayName}</span>
+          <span class="stat-value">${stat.value}</span>
+          <div class="stat-bar-container">
+            <div 
+              class="stat-bar ${stat.name}" 
+              style="width: 0%;"
+              data-percentage="${stat.percentage}"
+            ></div>
+          </div>
+        </div>
+      `).join('');
+      
+      // Animate stat bars
+      setTimeout(() => {
+        statsContainer.querySelectorAll('.stat-bar').forEach(bar => {
+          bar.style.width = bar.dataset.percentage + '%';
+        });
+      }, 100);
+      
+      // Abilities
+      const abilitiesContainer = document.getElementById('pokemon-abilities');
+      abilitiesContainer.innerHTML = pokemon.abilities
+        .map(ability => `<span class="ability-badge">${ability}</span>`)
+        .join('');
+      
+      // Show content
+      document.getElementById('pokemon-loading').classList.add('hidden');
+      document.getElementById('pokemon-content').classList.remove('hidden');
+      document.getElementById('main').classList.remove('hidden');
+    }
+    
+    function showError(message) {
+      const hero = document.getElementById('hero');
+      hero.innerHTML = `
+        <div class="error-container">
+          <div class="error-icon">😢</div>
+          <h1 class="error-title">Pokémon não encontrado</h1>
+          <p class="error-message">${escapeHtml(message)}</p>
+          <a href="index.html" class="home-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Ver todos os Pokémon
+          </a>
+        </div>
+      `;
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.warn('SW registration failed:', err));
+      });
+    }
+  </script>
+  
+  <style>
+    /* Dynamic hero background based on Pokemon type */
+    #hero::before {
+      background: linear-gradient(135deg, 
+        var(--hero-color, var(--type-normal)) 0%, 
+        rgba(15, 23, 42, 0.9) 100%
+      ) !important;
+    }
+  </style>
+</body>
+</html>
