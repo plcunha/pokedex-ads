@@ -6,14 +6,20 @@ Uma Pokédex moderna e profissional com duas versões: **Static Site** (GitHub P
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![CI](https://github.com/YOUR_USERNAME/pokedex-ads/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/plcunha/pokedex-ads/actions/workflows/ci.yml/badge.svg)
 
 ## Demo
 
-**[Acesse a Pokédex Online](https://YOUR_USERNAME.github.io/pokedex-ads/)**
+**[Acesse a Pokédex Online](https://plcunha.github.io/pokedex-ads/)**
+
+| Página | Link |
+|--------|------|
+| Pokédex | [plcunha.github.io/pokedex-ads/](https://plcunha.github.io/pokedex-ads/) |
+| Tier List | [plcunha.github.io/pokedex-ads/ranking.html](https://plcunha.github.io/pokedex-ads/ranking.html) |
 
 ## Features
 
+### Pokédex
 - **UI Moderna** - Design escuro elegante com animações suaves
 - **PWA Ready** - Funciona offline com Service Worker
 - **Performance** - Cache inteligente e lazy loading de imagens
@@ -21,6 +27,20 @@ Uma Pokédex moderna e profissional com duas versões: **Static Site** (GitHub P
 - **Busca Inteligente** - Busca por nome ou número do Pokémon
 - **Estatísticas Visuais** - Barras animadas para stats do Pokémon
 - **Cores por Tipo** - Cards coloridos de acordo com o tipo do Pokémon
+
+### Detalhes do Pokémon
+- **Sprite Shiny** - Toggle para ver versão shiny ✨
+- **Som do Pokémon** - Botão para ouvir o cry 🔊
+- **Movimentos** - Lista de movimentos aprendidos por nível
+
+### Tier List (TierMaker-style)
+- **Drag & Drop** - Arraste Pokémon para classificar
+- **Labels Editáveis** - Renomeie os tiers (S+ → GOD TIER)
+- **Filtro por Tipo** - Filtre Pokémon por tipo
+- **Screenshot** - Capture e baixe sua tier list
+- **Compartilhar** - Web Share API ou clipboard
+- **Touch Support** - Funciona em dispositivos móveis
+- **Persistência** - Salva automaticamente no localStorage
 
 ## Arquitetura do Projeto
 
@@ -30,10 +50,12 @@ pokedex-ads/
 │   ├── css/styles.css       # Estilos CSS
 │   ├── js/
 │   │   ├── api.js           # Serviço de API (PokeAPI)
-│   │   └── app.js           # Aplicação principal
+│   │   ├── app.js           # Aplicação principal
+│   │   └── ranking.js       # Tier List (TierMaker-style)
 │   ├── icons/               # Ícones PWA
 │   ├── index.html           # Página principal
 │   ├── pokemon.html         # Página de detalhes
+│   ├── ranking.html         # Tier List Maker
 │   ├── 404.html             # Página de erro
 │   ├── manifest.json        # PWA Manifest
 │   └── sw.js                # Service Worker
