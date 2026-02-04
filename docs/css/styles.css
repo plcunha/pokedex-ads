@@ -2793,6 +2793,11 @@ body {
   font-weight: 700;
 }
 
+.battle-log-entry.info {
+  color: #94A3B8;
+  font-style: italic;
+}
+
 /* Attack Buttons */
 .attack-buttons {
   display: grid;

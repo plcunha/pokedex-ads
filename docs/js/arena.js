@@ -1098,10 +1098,17 @@ async function playerAttack(moveIndex) {
   document.querySelectorAll('.attack-btn').forEach(btn => btn.disabled = true);
   
   // Calculate damage
-  const { damage, isCritical } = calculateDamage(currentPokemon, opponentPokemon, move);
+  const { damage, isCritical, effectivenessMessage } = calculateDamage(currentPokemon, opponentPokemon, move);
   
   // Add battle log
   addBattleLog(`💥 ${currentPokemon.displayName} usou ${move.name}!`, 'player');
+  if (effectivenessMessage === 'superEffective') {
+    addBattleLog('🔥 É super efetivo!', 'critical');
+  } else if (effectivenessMessage === 'notVeryEffective') {
+    addBattleLog('💨 Não é muito efetivo...', 'info');
+  } else if (effectivenessMessage === 'noEffect') {
+    addBattleLog('❌ Não afetou o oponente!', 'info');
+  }
   if (isCritical) {
     addBattleLog('⚡ Golpe crítico!', 'critical');
   }
@@ -1137,10 +1144,17 @@ async function opponentAttack() {
   const move = battleState.opponentMoves[moveIndex];
   
   // Calculate damage
-  const { damage, isCritical } = calculateDamage(opponentPokemon, currentPokemon, move);
+  const { damage, isCritical, effectivenessMessage } = calculateDamage(opponentPokemon, currentPokemon, move);
   
   // Add battle log
   addBattleLog(`💢 ${opponentPokemon.displayName} usou ${move.name}!`, 'opponent');
+  if (effectivenessMessage === 'superEffective') {
+    addBattleLog('🔥 É super efetivo!', 'critical');
+  } else if (effectivenessMessage === 'notVeryEffective') {
+    addBattleLog('💨 Não é muito efetivo...', 'info');
+  } else if (effectivenessMessage === 'noEffect') {
+    addBattleLog('❌ Não afetou você!', 'info');
+  }
   if (isCritical) {
     addBattleLog('⚡ Golpe crítico!', 'critical');
   }
