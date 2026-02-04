@@ -17,3 +17,14 @@ export { metricsService } from './metrics.service';
 // Rate limiting
 export { rateLimiter, RateLimiterService } from './rate-limiter.service';
 export type { RateLimitConfig, RateLimitInfo } from './rate-limiter.service';
+
+// Internationalization (i18n)
+export {
+  I18nService,
+  getTranslations,
+  getSupportedLocales,
+  getDefaultLocale,
+  isLocaleSupported,
+  parseAcceptLanguage,
+} from './i18n.service';
+export type { SupportedLocale, TranslationMessages } from './i18n.service';

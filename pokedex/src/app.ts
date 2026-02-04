@@ -12,10 +12,11 @@ import path from 'path';
 import helmet from 'helmet';
 import compression from 'compression';
 import swaggerUi from 'swagger-ui-express';
+import cookieParser from 'cookie-parser';
 
 import { config, swaggerSpec } from './config';
 import routes from './routes';
-import { errorHandler, notFoundHandler, requestLogger } from './middlewares';
+import { errorHandler, notFoundHandler, requestLogger, i18nMiddleware } from './middlewares';
 import { rateLimiter } from './services';
 
 /**
@@ -94,6 +95,13 @@ function createApp(): Express {
   
   app.use(express.json({ limit: '10kb' }));
   app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+  app.use(cookieParser());
+
+  // ===========================================
+  // Internationalization (i18n)
+  // ===========================================
+  
+  app.use(i18nMiddleware);
 
   // ===========================================
   // Logging
@@ -152,21 +160,26 @@ function startServer(): void {
   });
 }
 
-// Handle uncaught exceptions
-process.on('uncaughtException', (error: Error) => {
-  console.error('UNCAUGHT EXCEPTION! Shutting down...');
-  console.error(error.name, error.message);
-  process.exit(1);
-});
+// Only start server and register process handlers when not in test mode
+const isTestMode = process.env.NODE_ENV === 'test' || process.env.VITEST;
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason: unknown) => {
-  console.error('UNHANDLED REJECTION! Shutting down...');
-  console.error(reason);
-  process.exit(1);
-});
+if (!isTestMode) {
+  // Handle uncaught exceptions
+  process.on('uncaughtException', (error: Error) => {
+    console.error('UNCAUGHT EXCEPTION! Shutting down...');
+    console.error(error.name, error.message);
+    process.exit(1);
+  });
 
-// Start the application
-startServer();
+  // Handle unhandled promise rejections
+  process.on('unhandledRejection', (reason: unknown) => {
+    console.error('UNHANDLED REJECTION! Shutting down...');
+    console.error(reason);
+    process.exit(1);
+  });
+
+  // Start the application
+  startServer();
+}
 
 export { createApp };
